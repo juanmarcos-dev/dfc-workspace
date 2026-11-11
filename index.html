@@ -1090,13 +1090,16 @@
       const hNum = parseInt(parts[0]);
       const ampm = parts[1];
 
+      // Dito natin isinasama ang pormat na gusto mo (e.g. Alarm (7:28 PM) ⏰)
+      const formattedTitleWithTime = `${title} (${formattedTimeStr}) ⏰`;
+
       const newAlarm = {
         id: 'v_alarm_' + Date.now(),
         time: formattedTimeStr,
         hour: hNum,
         ampm: ampm,
         minute: parseInt(minute),
-        title: title,
+        title: formattedTitleWithTime, // Naka-save na agad sa pormat na ito
         sound: sound,
         repeat: repeat,
         active: true
@@ -1106,6 +1109,8 @@
       saveVClockAlarms();
       stopSoundPreview();
       document.getElementById('vClockTitle').value = 'Alarm';
+      
+      // Isara nang maayos ang popover kapag na-click ang Start
       document.getElementById('alarmPopover')?.classList.add('hidden');
     }
 
