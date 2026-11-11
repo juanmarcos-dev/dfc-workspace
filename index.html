@@ -1050,73 +1050,25 @@
     }
 
     function triggerRingingModal(title, timeStr, soundType) {
-      const modal = document.getElementById('vClockRingingModal');
-      document.getElementById('ringingModalTitleText').textContent = title;
-      document.getElementById('ringingModalSubTitle').textContent = title;
-      document.getElementById('ringingModalTimeText').textContent = timeStr;
+  const modal = document.getElementById('vClockRingingModal');
+  document.getElementById('ringingModalTitleText').textContent = title;
+  document.getElementById('ringingModalSubTitle').textContent = title;
+  document.getElementById('ringingModalTimeText').textContent = timeStr;
 
-      modal.classList.remove('hidden');
-      alarmPopover?.classList.add('hidden');
-      stopSoundPreview();
+  modal.classList.remove('hidden');
+  alarmPopover?.classList.add('hidden');
+  stopSoundPreview();
 
-      playSoundTone(soundType);
+  playSoundTone(soundType);
 
-      // Subukang magbukas ng bagong Chrome tab
-      try {
-        const newTab = window.open('', '_blank');
-        if (newTab) {
-          newTab.document.write(`
-            <!DOCTYPE html>
-            <html>
-              <head>
-                <title>🚨 ALARM: ${title}</title>
-                <style>
-                  body { background: #1e293b; color: white; font-family: Calibri, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-                  h1 { font-size: 3rem; color: #e5534b; margin-bottom: 10px; }
-                  h2 { font-size: 1.8rem; margin: 0 0 20px 0; }
-                  p { font-size: 1.2rem; color: #94a3b8; }
-                  button { margin-top: 20px; padding: 12px 24px; background: #e5534b; color: white; border: none; border-radius: 6px; font-size: 1rem; font-weight: bold; cursor: pointer; }
-                </style>
-              </head>
-              <body>
-                <h1>⏰ ORAS NA!</h1>
-                <h2>${title} (${timeStr})</h2>
-                <p>Magpahinga o i-check ang iyong shift schedule sa DFC Workspace.</p>
-                <button onclick="window.close()">Isara ang Tab na Ito</button>
-              </body>
-            </html>
-          `);
-        } else {
-          showPopupWarningModal();
-        }
-      } catch (e) {
-        console.log("Popup blocked", e);
-        showPopupWarningModal();
-      }
-
-      // Fallback: Desktop notification kapag naka-allow
-      if ("Notification" in window && Notification.permission === "granted") {
-        const notification = new Notification(`🚨 ALARM: ${title}`, {
-          body: `Oras na: ${timeStr} - Magpahinga o i-check ang schedule!`,
-          icon: 'https://cdn-icons-png.flaticon.com/512/3602/3602123.png',
-          requireInteraction: true
-        });
-
-        notification.onclick = function() {
-          window.focus();
-          notification.close();
-        };
-      }
-
-      if (activeRingingInterval) clearInterval(activeRingingInterval);
-      activeRingingInterval = setInterval(() => {
-        if (!modal.classList.contains('hidden')) {
-          playSoundTone(soundType);
-        } else {
-          clearInterval(activeRingingInterval);
-        }
-      }, 3000);
-    }
+  // ALisin o i-comment out mo itong bahagi para hindi na magbukas ng bagong tab:
+  /*
+  try {
+    const newTab = window.open('', '_blank');
+    ...
+  } catch (e) {}
+  */
+}
 
     function dismissRingingAlarm() {
       const modal = document.getElementById('vClockRingingModal');
