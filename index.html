@@ -438,8 +438,7 @@
   </div>
 
   <!-- ==================== AGENT LOGIN MODAL ==================== -->
-  <div id="authGatekeeperModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[9999] flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg border border-doms-border w-full max-w-sm p-6 shadow-2xl text-xs space-y-4">
+  <div id="authGatekeeperModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4">    <div class="bg-white rounded-lg border border-doms-border w-full max-w-sm p-6 shadow-2xl text-xs space-y-4">
       <div class="text-center space-y-1">
         <div class="w-10 h-10 rounded-full bg-purple-100 text-doms-purple mx-auto flex items-center justify-center mb-2">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -873,6 +872,8 @@
     let activeRingingInterval = null;
     let previewInterval = null;
     let isPlayingPreview = false;
+    let titleFlashInterval = null;
+    const originalPageTitle = document.title;
 
     function saveVClockAlarms() {
       localStorage.setItem('dfc_vclock_alarms_exact', JSON.stringify(vClockAlarms));
@@ -1009,70 +1010,67 @@
       }
     }
 
-    let titleFlashInterval = null;
-const originalPageTitle = document.title;
+    function triggerRingingModal(title, timeStr, soundType) {
+      const modal = document.getElementById('vClockRingingModal');
+      // Dito na ipapakita ang mismong in-input ni agent na title (e.g. Lunch Break)
+      document.getElementById('ringingModalTitleText').textContent = title;
+      document.getElementById('ringingModalSubTitle').textContent = title;
+      document.getElementById('ringingModalTimeText').textContent = timeStr;
 
-function triggerRingingModal(title, timeStr, soundType) {
-  const modal = document.getElementById('vClockRingingModal');
-  document.getElementById('ringingModalTitleText').textContent = title;
-  document.getElementById('ringingModalSubTitle').textContent = title;
-  document.getElementById('ringingModalTimeText').textContent = timeStr;
+      modal.classList.remove('hidden');
+      alarmPopover?.classList.add('hidden');
+      stopSoundPreview();
 
-  modal.classList.remove('hidden');
-  alarmPopover?.classList.add('hidden');
-  stopSoundPreview();
-
-  playSoundTone(soundType);
-
-  // 1. Desktop Push Notification (Kahit nasa ibang tab)
-  if ("Notification" in window && Notification.permission === "granted") {
-    const notification = new Notification(`🚨 ALARM: ${title}`, {
-      body: `Oras na: ${timeStr} - Magpahinga o i-check ang schedule!`,
-      icon: 'https://cdn-icons-png.flaticon.com/512/3602/3602123.png',
-      requireInteraction: true
-    });
-
-    notification.onclick = function() {
-      window.focus();
-      notification.close();
-    };
-  }
-
-  // 2. Kumukutitap/Nagpapalit na Tab Title para mapansin sa ibang tab
-  if (!titleFlashInterval) {
-    let toggle = false;
-    titleFlashInterval = setInterval(() => {
-      document.title = toggle ? `🚨 ALARM NA (${timeStr})!` : originalPageTitle;
-      toggle = !toggle;
-    }, 1000);
-  }
-
-  if (activeRingingInterval) clearInterval(activeRingingInterval);
-  activeRingingInterval = setInterval(() => {
-    if (!modal.classList.contains('hidden')) {
       playSoundTone(soundType);
-    } else {
-      clearInterval(activeRingingInterval);
+
+      // Desktop notification gamit ang custom title ni agent
+      if ("Notification" in window && Notification.permission === "granted") {
+        const notification = new Notification(`🚨 ALARM: ${title}`, {
+          body: `Oras na (${timeStr}) - I-check ang iyong workspace!`,
+          icon: 'https://cdn-icons-png.flaticon.com/512/3602/3602123.png',
+          requireInteraction: true
+        });
+
+        notification.onclick = function() {
+          window.focus();
+          notification.close();
+        };
+      }
+
+      // Kumukutitap na Tab Title na may kasamang custom title ni agent
+      if (!titleFlashInterval) {
+        let toggle = false;
+        titleFlashInterval = setInterval(() => {
+          document.title = toggle ? `🚨 ${title} (${timeStr})!` : originalPageTitle;
+          toggle = !toggle;
+        }, 1000);
+      }
+
+      if (activeRingingInterval) clearInterval(activeRingingInterval);
+      activeRingingInterval = setInterval(() => {
+        if (!modal.classList.contains('hidden')) {
+          playSoundTone(soundType);
+        } else {
+          clearInterval(activeRingingInterval);
+        }
+      }, 3000);
     }
-  }, 3000);
-}
 
-// Kapagclinick ang OK o isinara ang alarm, ibabalik sa dati ang Tab Title
-function dismissRingingAlarm() {
-  const modal = document.getElementById('vClockRingingModal');
-  modal.classList.add('hidden');
-  
-  if (activeRingingInterval) {
-    clearInterval(activeRingingInterval);
-    activeRingingInterval = null;
-  }
+    function dismissRingingAlarm() {
+      const modal = document.getElementById('vClockRingingModal');
+      modal.classList.add('hidden');
+      
+      if (activeRingingInterval) {
+        clearInterval(activeRingingInterval);
+        activeRingingInterval = null;
+      }
 
-  if (titleFlashInterval) {
-    clearInterval(titleFlashInterval);
-    titleFlashInterval = null;
-    document.title = originalPageTitle;
-  }
-}
+      if (titleFlashInterval) {
+        clearInterval(titleFlashInterval);
+        titleFlashInterval = null;
+        document.title = originalPageTitle;
+      }
+    }
 
     function addNewVClockAlarm() {
       requestBrowserPermissions();
@@ -1105,8 +1103,6 @@ function dismissRingingAlarm() {
       saveVClockAlarms();
       stopSoundPreview();
       document.getElementById('vClockTitle').value = 'Alarm';
-      
-      // Isara ang popover pagka-click ng Start
       document.getElementById('alarmPopover')?.classList.add('hidden');
     }
 
@@ -1473,13 +1469,14 @@ function dismissRingingAlarm() {
     function checkAuthOnLoad() {
       const storedXid = localStorage.getItem('dfc_agent_xid');
       const storedEmail = localStorage.getItem('dfc_agent_email');
+      const modal = document.getElementById('authGatekeeperModal');
 
       if (storedXid && storedEmail && validateXid(storedXid) && validateTelusEmail(storedEmail)) {
-        document.getElementById('authGatekeeperModal').classList.add('hidden');
+        modal.classList.add('hidden');
         applyAgentDetails(storedXid, storedEmail);
         setupFirebasePresence(storedXid, storedEmail);
       } else {
-        document.getElementById('authGatekeeperModal').classList.remove('hidden');
+        modal.classList.remove('hidden');
       }
     }
 
