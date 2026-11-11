@@ -1013,10 +1013,10 @@
     function triggerRingingModal(title, timeStr, soundType) {
       const modal = document.getElementById('vClockRingingModal');
       
-      // Eksaktong pormat: Alarm (7:28 PM) ⏰
-      const formattedAlertText = `${title} (${timeStr}) ⏰`;
+      // Pormat sa pag-ring: Title + Emoji (Halimbawa: Alarm ⏰)
+      const ringingDisplayTitle = `${title} ⏰`;
 
-      document.getElementById('ringingModalTitleText').textContent = formattedAlertText;
+      document.getElementById('ringingModalTitleText').textContent = ringingDisplayTitle;
       document.getElementById('ringingModalSubTitle').textContent = title;
       document.getElementById('ringingModalTimeText').textContent = timeStr;
 
@@ -1026,9 +1026,9 @@
 
       playSoundTone(soundType);
 
-      // 1. Desktop Notification na may parehong pormat
+      // 1. Desktop Notification na Title lang + Emoji
       if ("Notification" in window && Notification.permission === "granted") {
-        const notification = new Notification(`🚨 ${formattedAlertText}`, {
+        const notification = new Notification(`🚨 ${title} (${timeStr}) ⏰`, {
           body: `Oras na para sa iyong naka-set na iskedyul!`,
           icon: 'https://cdn-icons-png.flaticon.com/512/3602/3602123.png',
           requireInteraction: true
@@ -1040,11 +1040,11 @@
         };
       }
 
-      // 2. Kumukutitap na Tab Title na may pormat na: Alarm (7:28 PM) ⏰
+      // 2. Tab Title na kumukutitap
       if (!titleFlashInterval) {
         let toggle = false;
         titleFlashInterval = setInterval(() => {
-          document.title = toggle ? formattedAlertText : originalPageTitle;
+          document.title = toggle ? `🚨 ${title} (${timeStr}) ⏰` : originalPageTitle;
           toggle = !toggle;
         }, 1000);
       }
@@ -1082,6 +1082,8 @@
       const minute = document.getElementById('vClockMinute').value;
       const sound = document.getElementById('vClockSound').value;
       const repeat = document.getElementById('vClockRepeat').checked;
+      
+      // Kunin lang kung ano ang nilagay sa Title box (walang halong oras)
       const title = document.getElementById('vClockTitle').value.trim() || 'Alarm';
 
       const parts = hourFull.split(' ');
@@ -1090,16 +1092,13 @@
       const hNum = parseInt(parts[0]);
       const ampm = parts[1];
 
-      // Dito natin isinasama ang pormat na gusto mo (e.g. Alarm (7:28 PM) ⏰)
-      const formattedTitleWithTime = `${title} (${formattedTimeStr}) ⏰`;
-
       const newAlarm = {
         id: 'v_alarm_' + Date.now(),
         time: formattedTimeStr,
         hour: hNum,
         ampm: ampm,
         minute: parseInt(minute),
-        title: formattedTitleWithTime, // Naka-save na agad sa pormat na ito
+        title: title, // Title lang tulad ng "Alarm" o "Lunch Break"
         sound: sound,
         repeat: repeat,
         active: true
@@ -1108,10 +1107,6 @@
       vClockAlarms.push(newAlarm);
       saveVClockAlarms();
       stopSoundPreview();
-      document.getElementById('vClockTitle').value = 'Alarm';
-      
-      // Isara nang maayos ang popover kapag na-click ang Start
-      document.getElementById('alarmPopover')?.classList.add('hidden');
     }
 
     function toggleVClockAlarm(id, event) {
