@@ -313,17 +313,21 @@
             <label class="block font-medium text-slate-600 mb-1">Sound</label>
             <div class="flex items-center gap-1.5">
               <select id="vClockSound" class="flex-1 px-2.5 py-2 border border-slate-300 rounded bg-white font-medium focus:outline-none focus:border-[#0095f6]">
-                <option value="bells" selected>Bells</option>
-                <option value="beep">Classic Beep</option>
-                <option value="chime">Soft Chime</option>
-                <option value="digital">Digital Alarm</option>
+                <option value="bells">🔔 Bells</option>
+                <option value="xylophone">🎹 Xylophone</option>
+                <option value="windchimes">🌬️ Windchimes</option>
+                <option value="twinkle">✨ Twinkle</option>
+                <option value="rooster">🐓 Rooster</option>
+                <option value="paradise">🏝️ Paradise</option>
+                <option value="classic">⏰ Classic</option>
+                <option value="flute">🎶 Flute</option>
               </select>
               <button 
                 id="soundPreviewBtn"
                 type="button" 
                 onclick="toggleSoundPreview()" 
                 title="Play/Stop Sound Preview"
-                class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded text-slate-700 font-bold flex items-center justify-center cursor-pointer w-10"
+                class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-300 rounded text-slate-700 font-bold flex items-center justify-center cursor-pointer w-10 transition-colors"
               >
                 ▶
               </button>
@@ -472,10 +476,10 @@
             maxlength="7" 
             placeholder="e.g. x123456" 
             autocomplete="off"
-            class="w-full px-3 py-2 border border-doms-border rounded bg-white text-doms-textMain font-mono text-sm focus:outline-none focus:border-doms-purple focus:ring-1 focus:ring-doms-purple text-center uppercase placeholder:normal-case"
+            class="w-full px-3 py-2 border border-doms-border rounded bg-white text-doms-textMain font-mono text-sm focus:outline-none focus:border-doms-purple focus:ring-1 focus:ring-doms-purple text-center lowercase placeholder:normal-case"
           />
           <p id="xidErrorText" class="text-rose-600 text-[10.5px] font-medium mt-1 hidden">
-            ⚠️ Invalid format! Must start with 'x' followed by 6 digits (e.g. x123456).
+            ⚠️ Invalid format! Must start with lowercase 'x' followed by 6 digits (e.g. x123456).
           </p>
         </div>
 
@@ -560,14 +564,6 @@
       </div>
 
       <div class="grid grid-cols-2 gap-2">
-        <a href="https://docs.google.com/spreadsheets/d/19hu38I8j_pMfld4ojGrkcm5WXgvza0d8XLDzhj9IK-8/edit?gid=0#gid=0" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <span>📊</span>
-            <span>Agent Logger Sheet</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
         <a href="https://www.telus.com/oms/order/search" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
           <span class="flex items-center gap-2">
             <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
@@ -756,7 +752,7 @@
     function logAgentToGoogleSheet(xid, email) {
       const payload = {
         timestamp: new Date().toLocaleString(),
-        xid: xid.toUpperCase(),
+        xid: xid.toLowerCase(),
         email: email.toLowerCase()
       };
 
@@ -824,7 +820,7 @@
 
         userStatusRef.onDisconnect().remove().then(() => {
           userStatusRef.set({
-            xid: xid.toUpperCase(),
+            xid: xid.toLowerCase(),
             email: email ? email.toLowerCase() : '',
             status: 'active',
             lastSeen: firebase.database.ServerValue.TIMESTAMP
@@ -867,13 +863,24 @@
       }
     });
 
-    // ================== vCLOCK EXACT ALARM & SOUND LOGIC ==================
+    // ================== REAL MP3 ALARM & SOUND LOGIC ==================
     let vClockAlarms = JSON.parse(localStorage.getItem('dfc_vclock_alarms_exact') || '[]');
     let activeRingingInterval = null;
-    let previewInterval = null;
-    let isPlayingPreview = false;
+    let currentAlarmAudio = null;
     let titleFlashInterval = null;
     const originalPageTitle = document.title;
+
+    // Stable vClock MP3 sound library
+    const alarmSounds = {
+      'bells': 'https://vclock.com/sound/bells.mp3',
+      'xylophone': 'https://vclock.com/sound/xylophone.mp3',
+      'windchimes': 'https://vclock.com/sound/windchimes.mp3',
+      'twinkle': 'https://vclock.com/sound/twinkle.mp3',
+      'rooster': 'https://vclock.com/sound/rooster.mp3',
+      'paradise': 'https://vclock.com/sound/paradise.mp3',
+      'classic': 'https://vclock.com/sound/classic.mp3',
+      'flute': 'https://vclock.com/sound/flute.mp3'
+    };
 
     function saveVClockAlarms() {
       localStorage.setItem('dfc_vclock_alarms_exact', JSON.stringify(vClockAlarms));
@@ -896,78 +903,52 @@
       sel.value = String(val).padStart(2, '0');
     }
 
-    function playSoundTone(soundType) {
+    function playSoundTone(soundKey) {
       try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+        stopSoundPreview();
+        const audioUrl = alarmSounds[soundKey] || alarmSounds['bells'];
+        currentAlarmAudio = new Audio(audioUrl);
+        currentAlarmAudio.loop = true;
+        
+        currentAlarmAudio.play().then(() => {
+          const btn = document.getElementById('soundPreviewBtn');
+          if (btn) {
+            btn.textContent = '■';
+            btn.classList.add('bg-rose-500', 'text-white', 'border-rose-600');
+          }
+        }).catch(err => {
+          console.error("Audio playback error:", err);
+        });
 
-        if (soundType === 'chime') {
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(523.25, ctx.currentTime);
-          gain.gain.setValueAtTime(0.18, ctx.currentTime);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 1.2);
-        } else if (soundType === 'digital') {
-          osc.type = 'sawtooth';
-          osc.frequency.setValueAtTime(440, ctx.currentTime);
-          gain.gain.setValueAtTime(0.12, ctx.currentTime);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.5);
-        } else if (soundType === 'bells') {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(659.25, ctx.currentTime);
-          gain.gain.setValueAtTime(0.15, ctx.currentTime);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.9);
-        } else {
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(880, ctx.currentTime);
-          gain.gain.setValueAtTime(0.12, ctx.currentTime);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.6);
-        }
-      } catch (e) {}
+        currentAlarmAudio.onended = () => {
+          stopSoundPreview();
+        };
+
+      } catch (e) {
+        console.error("Audio initialization error:", e);
+      }
     }
 
     function toggleSoundPreview() {
-      const btn = document.getElementById('soundPreviewBtn');
       const soundType = document.getElementById('vClockSound').value;
 
-      if (!isPlayingPreview) {
-        isPlayingPreview = true;
-        btn.textContent = '■';
-        btn.classList.add('bg-rose-100', 'text-rose-600', 'border-rose-300');
-
+      if (!currentAlarmAudio || currentAlarmAudio.paused) {
         playSoundTone(soundType);
-        previewInterval = setInterval(() => {
-          if (isPlayingPreview) {
-            playSoundTone(soundType);
-          }
-        }, 1200);
       } else {
         stopSoundPreview();
       }
     }
 
     function stopSoundPreview() {
-      isPlayingPreview = false;
+      if (currentAlarmAudio) {
+        currentAlarmAudio.pause();
+        currentAlarmAudio.currentTime = 0;
+        currentAlarmAudio = null;
+      }
       const btn = document.getElementById('soundPreviewBtn');
       if (btn) {
         btn.textContent = '▶';
-        btn.classList.remove('bg-rose-100', 'text-rose-600', 'border-rose-300');
-      }
-      if (previewInterval) {
-        clearInterval(previewInterval);
-        previewInterval = null;
+        btn.classList.remove('bg-rose-500', 'text-white', 'border-rose-600');
       }
     }
 
@@ -1012,8 +993,6 @@
 
     function triggerRingingModal(title, timeStr, soundType) {
       const modal = document.getElementById('vClockRingingModal');
-      
-      // Pormat sa pag-ring: Title + Emoji (Halimbawa: Alarm ⏰)
       const ringingDisplayTitle = `${title} ⏰`;
 
       document.getElementById('ringingModalTitleText').textContent = ringingDisplayTitle;
@@ -1026,7 +1005,6 @@
 
       playSoundTone(soundType);
 
-      // 1. Desktop Notification na Title lang + Emoji
       if ("Notification" in window && Notification.permission === "granted") {
         const notification = new Notification(`🚨 ${title} (${timeStr}) ⏰`, {
           body: `Oras na para sa iyong naka-set na iskedyul!`,
@@ -1040,7 +1018,6 @@
         };
       }
 
-      // 2. Tab Title na kumukutitap
       if (!titleFlashInterval) {
         let toggle = false;
         titleFlashInterval = setInterval(() => {
@@ -1048,25 +1025,13 @@
           toggle = !toggle;
         }, 1000);
       }
-
-      if (activeRingingInterval) clearInterval(activeRingingInterval);
-      activeRingingInterval = setInterval(() => {
-        if (!modal.classList.contains('hidden')) {
-          playSoundTone(soundType);
-        } else {
-          clearInterval(activeRingingInterval);
-        }
-      }, 3000);
     }
 
     function dismissRingingAlarm() {
       const modal = document.getElementById('vClockRingingModal');
       modal.classList.add('hidden');
       
-      if (activeRingingInterval) {
-        clearInterval(activeRingingInterval);
-        activeRingingInterval = null;
-      }
+      stopSoundPreview();
 
       if (titleFlashInterval) {
         clearInterval(titleFlashInterval);
@@ -1082,8 +1047,6 @@
       const minute = document.getElementById('vClockMinute').value;
       const sound = document.getElementById('vClockSound').value;
       const repeat = document.getElementById('vClockRepeat').checked;
-      
-      // Kunin lang kung ano ang nilagay sa Title box (walang halong oras)
       const title = document.getElementById('vClockTitle').value.trim() || 'Alarm';
 
       const parts = hourFull.split(' ');
@@ -1098,7 +1061,7 @@
         hour: hNum,
         ampm: ampm,
         minute: parseInt(minute),
-        title: title, // Title lang tulad ng "Alarm" o "Lunch Break"
+        title: title,
         sound: sound,
         repeat: repeat,
         active: true
@@ -1406,7 +1369,7 @@
     }
 
     function validateXid(xid) {
-      return /^x\d{6}$/i.test(xid.trim());
+      return /^x\d{6}$/.test(xid.trim()); // Small letter 'x' strictly required
     }
 
     function validateTelusEmail(email) {
@@ -1423,7 +1386,7 @@
       const xidErrorText = document.getElementById('xidErrorText');
 
       const email = emailInput.value.trim();
-      const xid = xidInput.value.trim().toLowerCase();
+      const xid = xidInput.value.trim().toLowerCase(); // Naka-convert na sa small letter
 
       let valid = true;
 
@@ -1443,14 +1406,14 @@
 
       if (!valid) return;
 
-      localStorage.setItem('dfc_agent_xid', xid.toUpperCase());
+      localStorage.setItem('dfc_agent_xid', xid); // Small letter save
       localStorage.setItem('dfc_agent_email', email.toLowerCase());
 
       logAgentToGoogleSheet(xid, email);
       setupFirebasePresence(xid, email);
 
       document.getElementById('authGatekeeperModal').classList.add('hidden');
-      applyAgentDetails(xid.toUpperCase(), email.toLowerCase());
+      applyAgentDetails(xid, email.toLowerCase());
     }
 
     function applyAgentDetails(xid, email) {
@@ -1491,6 +1454,6 @@
       autoSyncCurrentTimeDropdowns();
       requestBrowserPermissions();
     });
-  </script>
+</script>
 </body>
 </html>
