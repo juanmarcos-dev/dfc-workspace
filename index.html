@@ -1012,8 +1012,11 @@
 
     function triggerRingingModal(title, timeStr, soundType) {
       const modal = document.getElementById('vClockRingingModal');
-      // Dito na ipapakita ang mismong in-input ni agent na title (e.g. Lunch Break)
-      document.getElementById('ringingModalTitleText').textContent = title;
+      
+      // Eksaktong pormat: Alarm (7:28 PM) ⏰
+      const formattedAlertText = `${title} (${timeStr}) ⏰`;
+
+      document.getElementById('ringingModalTitleText').textContent = formattedAlertText;
       document.getElementById('ringingModalSubTitle').textContent = title;
       document.getElementById('ringingModalTimeText').textContent = timeStr;
 
@@ -1023,10 +1026,10 @@
 
       playSoundTone(soundType);
 
-      // Desktop notification gamit ang custom title ni agent
+      // 1. Desktop Notification na may parehong pormat
       if ("Notification" in window && Notification.permission === "granted") {
-        const notification = new Notification(`🚨 ALARM: ${title}`, {
-          body: `Oras na (${timeStr}) - I-check ang iyong workspace!`,
+        const notification = new Notification(`🚨 ${formattedAlertText}`, {
+          body: `Oras na para sa iyong naka-set na iskedyul!`,
           icon: 'https://cdn-icons-png.flaticon.com/512/3602/3602123.png',
           requireInteraction: true
         });
@@ -1037,11 +1040,11 @@
         };
       }
 
-      // Kumukutitap na Tab Title na may kasamang custom title ni agent
+      // 2. Kumukutitap na Tab Title na may pormat na: Alarm (7:28 PM) ⏰
       if (!titleFlashInterval) {
         let toggle = false;
         titleFlashInterval = setInterval(() => {
-          document.title = toggle ? `🚨 ${title} (${timeStr})!` : originalPageTitle;
+          document.title = toggle ? formattedAlertText : originalPageTitle;
           toggle = !toggle;
         }, 1000);
       }
