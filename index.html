@@ -257,10 +257,10 @@
           <span id="alarmCountBadge" class="bg-purple-950/90 border border-purple-500/30 px-1.5 py-0.2 rounded text-[10px] font-bold text-amber-300 shadow-inner">0</span>
         </button>
 
-        <!-- Alarm Popover -->
+        <!-- Alarm Popover (Responsive: Fixed Center on Mobile, Absolute Right on PC) -->
         <div 
           id="alarmPopover" 
-          class="hidden absolute right-0 top-10 w-80 bg-white border border-[#D8D8D8] rounded-xl shadow-2xl p-4 z-50 text-slate-800 space-y-3 text-xs"
+          class="hidden fixed md:absolute left-4 right-4 md:left-auto md:right-0 top-16 md:top-10 max-w-sm md:w-80 bg-white border border-[#D8D8D8] rounded-xl shadow-2xl p-4 z-50 text-slate-800 space-y-3 text-xs mx-auto"
         >
           <div class="flex items-center justify-between bg-[#0095f6] text-white -mx-4 -mt-4 p-3 rounded-t-xl">
             <span class="font-bold text-sm tracking-wide">Edit Alarm</span>
