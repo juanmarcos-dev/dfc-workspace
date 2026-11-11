@@ -1009,50 +1009,70 @@
       }
     }
 
-    function triggerRingingModal(title, timeStr, soundType) {
-      const modal = document.getElementById('vClockRingingModal');
-      document.getElementById('ringingModalTitleText').textContent = title;
-      document.getElementById('ringingModalSubTitle').textContent = title;
-      document.getElementById('ringingModalTimeText').textContent = timeStr;
+    let titleFlashInterval = null;
+const originalPageTitle = document.title;
 
-      modal.classList.remove('hidden');
-      alarmPopover?.classList.add('hidden');
-      stopSoundPreview();
+function triggerRingingModal(title, timeStr, soundType) {
+  const modal = document.getElementById('vClockRingingModal');
+  document.getElementById('ringingModalTitleText').textContent = title;
+  document.getElementById('ringingModalSubTitle').textContent = title;
+  document.getElementById('ringingModalTimeText').textContent = timeStr;
 
+  modal.classList.remove('hidden');
+  alarmPopover?.classList.add('hidden');
+  stopSoundPreview();
+
+  playSoundTone(soundType);
+
+  // 1. Desktop Push Notification (Kahit nasa ibang tab)
+  if ("Notification" in window && Notification.permission === "granted") {
+    const notification = new Notification(`🚨 ALARM: ${title}`, {
+      body: `Oras na: ${timeStr} - Magpahinga o i-check ang schedule!`,
+      icon: 'https://cdn-icons-png.flaticon.com/512/3602/3602123.png',
+      requireInteraction: true
+    });
+
+    notification.onclick = function() {
+      window.focus();
+      notification.close();
+    };
+  }
+
+  // 2. Kumukutitap/Nagpapalit na Tab Title para mapansin sa ibang tab
+  if (!titleFlashInterval) {
+    let toggle = false;
+    titleFlashInterval = setInterval(() => {
+      document.title = toggle ? `🚨 ALARM NA (${timeStr})!` : originalPageTitle;
+      toggle = !toggle;
+    }, 1000);
+  }
+
+  if (activeRingingInterval) clearInterval(activeRingingInterval);
+  activeRingingInterval = setInterval(() => {
+    if (!modal.classList.contains('hidden')) {
       playSoundTone(soundType);
-
-      // Desktop notification fallback kung sakaling naka-allow
-      if ("Notification" in window && Notification.permission === "granted") {
-        const notification = new Notification(`🚨 ALARM: ${title}`, {
-          body: `Oras na: ${timeStr} - Magpahinga o i-check ang schedule!`,
-          icon: 'https://cdn-icons-png.flaticon.com/512/3602/3602123.png',
-          requireInteraction: true
-        });
-
-        notification.onclick = function() {
-          window.focus();
-          notification.close();
-        };
-      }
-
-      if (activeRingingInterval) clearInterval(activeRingingInterval);
-      activeRingingInterval = setInterval(() => {
-        if (!modal.classList.contains('hidden')) {
-          playSoundTone(soundType);
-        } else {
-          clearInterval(activeRingingInterval);
-        }
-      }, 3000);
+    } else {
+      clearInterval(activeRingingInterval);
     }
+  }, 3000);
+}
 
-    function dismissRingingAlarm() {
-      const modal = document.getElementById('vClockRingingModal');
-      modal.classList.add('hidden');
-      if (activeRingingInterval) {
-        clearInterval(activeRingingInterval);
-        activeRingingInterval = null;
-      }
-    }
+// Kapagclinick ang OK o isinara ang alarm, ibabalik sa dati ang Tab Title
+function dismissRingingAlarm() {
+  const modal = document.getElementById('vClockRingingModal');
+  modal.classList.add('hidden');
+  
+  if (activeRingingInterval) {
+    clearInterval(activeRingingInterval);
+    activeRingingInterval = null;
+  }
+
+  if (titleFlashInterval) {
+    clearInterval(titleFlashInterval);
+    titleFlashInterval = null;
+    document.title = originalPageTitle;
+  }
+}
 
     function addNewVClockAlarm() {
       requestBrowserPermissions();
