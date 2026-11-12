@@ -56,6 +56,56 @@
       transition: font-size 0.15s ease;
     }
 
+    .edge-tab-pill {
+      background-color: #EAE4F5;
+      border: 1px solid #C9BFE3;
+      border-left: none;
+      border-top-right-radius: 12px;
+      border-bottom-right-radius: 12px;
+      padding-left: 14px;
+      padding-right: 18px;
+      height: 48px;
+      width: 185px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: left;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+      transform: translateX(-158px);
+      box-shadow: 4px 4px 12px rgba(85, 37, 134, 0.12);
+    }
+
+    .edge-tab-pill .tab-label {
+      opacity: 0;
+      font-weight: 700;
+      color: #3F1B63;
+      transition: opacity 0.2s ease;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .edge-tab-pill:hover {
+      transform: translateX(0px);
+      background-color: #DDD4F0;
+      box-shadow: 6px 6px 18px rgba(85, 37, 134, 0.22);
+    }
+
+    .edge-tab-pill:hover .tab-label,
+    .edge-tab-pill.active-slide .tab-label {
+      opacity: 1;
+    }
+
+    .edge-tab-pill.active-slide {
+      transform: translateX(8px);
+      background-color: var(--doms-purple) !important;
+      border-color: var(--doms-purple) !important;
+      color: #FFFFFF !important;
+    }
+
+    .edge-tab-pill.active-slide .tab-label {
+      color: #FFFFFF !important;
+    }
+
     .live-dot {
       width: 6px;
       height: 6px;
@@ -68,6 +118,55 @@
     @keyframes pulseGlow {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    .workspace-card {
+      border: 1px solid var(--doms-border);
+      box-shadow: 0 6px 20px rgba(85, 37, 134, 0.06);
+      transition: all 0.25s ease;
+    }
+    .workspace-card:hover {
+      box-shadow: 0 8px 25px rgba(85, 37, 134, 0.12);
+      border-color: #C9BFE3;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 36px;
+      height: 20px;
+    }
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #cbd5e1;
+      transition: .25s;
+      border-radius: 20px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .25s;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider {
+      background-color: var(--doms-purple);
+      box-shadow: 0 0 8px rgba(85, 37, 134, 0.4);
+    }
+    input:checked + .slider:before {
+      transform: translateX(16px);
     }
   </style>
 </head>
@@ -386,24 +485,162 @@
     </div>
 
   </header>
+  <!-- ==================== DITO NAGTATAPOS ANG HEADER AREA ==================== -->
+
+  <!-- TATLONG SIDE TABS SA GILID -->
+  <div class="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3 select-none">
+    <button id="tab-email" type="button" onclick="triggerSideSlide('email', this)" class="edge-tab-pill cursor-pointer" title="Email Template">
+      <span class="tab-label">Email Template</span>
+    </button>
+    <button id="tab-verint" type="button" onclick="triggerSideSlide('verint', this)" class="edge-tab-pill cursor-pointer" title="Verint Template">
+      <span class="tab-label">Verint Template</span>
+    </button>
+    <button id="tab-cancellation" type="button" onclick="triggerSideSlide('cancellation', this)" class="edge-tab-pill cursor-pointer" title="Cancellation Template">
+      <span class="tab-label">Cancellation Template</span>
+    </button>
+  </div>
 
   <!-- ==================== MAIN WORKSPACE CANVAS ==================== -->
-  <main id="workspaceCanvas" class="flex-1 flex flex-col items-center justify-center p-6 text-doms-textMuted select-none">
-    <div class="text-center max-w-lg bg-white border border-doms-border p-6 rounded shadow-sm">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-purple-50 text-doms-purple text-xs font-bold mb-3 border border-purple-200">
-        <span>Verified Agent:</span>
-        <span id="canvasAgentXid" class="font-mono">--</span>
-      </div>
-      <p class="font-bold text-doms-textMain text-base">DFC Operations Dashboard</p>
-      <p class="mt-2 text-doms-textMuted leading-relaxed">
-        Workspace is unlocked. Click the headset menu above to access your verified profile, quick tools, and settings.
-      </p>
-    </div>
-  </main>
+  <main id="workspaceCanvas" class="flex-1 p-4 md:p-6 pl-12 md:pl-14 max-w-7xl mx-auto w-full flex flex-col justify-center">
+    
+    <!-- DUAL COLUMNS GRID -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 flex-1">
+      
+      <!-- OUTBOUND COLUMN -->
+      <div class="flex flex-col workspace-card bg-white rounded-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-[#552586] to-[#68339E] text-white px-4 py-2.5 flex items-center justify-between shadow-xs">
+          <span class="font-bold text-xs uppercase tracking-wider">Outbound</span>
+          <button type="button" onclick="downloadText('docOutboundText', 'Outbound_Notes.txt')" class="text-xs bg-black/20 hover:bg-black/30 px-2.5 py-1 rounded font-semibold cursor-pointer flex items-center gap-1 transition-colors shadow-2xs" title="Download Outbound Notes">
+            📥 DL
+          </button>
+        </div>
 
-  <footer class="border-t border-doms-border py-3 px-6 text-center text-xs text-doms-textMuted bg-doms-card">
-    DFC / Digital Fulfillment Center &bull; Home Solution
-  </footer>
+        <!-- Data Extractor & Controls Section -->
+        <div class="bg-slate-50/80 border-b border-[#D1CCD9] p-3.5 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[11px] text-slate-700 uppercase tracking-wide">Data Extractor</span>
+            <select id="outboundTemplateSelect" onchange="updateOutboundTemplate()" class="text-[11px] font-semibold bg-white border border-slate-300 rounded px-2 py-1 text-slate-800 focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
+              <option value="non-move">FOR NON MOVE</option>
+              <option value="move">FOR MOVES</option>
+            </select>
+          </div>
+          <textarea id="extractorLeftText" placeholder="Paste raw DOMS notes here..." class="w-full h-20 p-2.5 bg-white border border-slate-300 rounded text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
+          
+          <!-- Call Attempt & Disposition Controls -->
+          <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Call Attempt</label>
+              <select id="outboundAttempt" onchange="updateOutboundTemplate()" class="w-full text-[11px] bg-white border border-slate-300 rounded p-1 font-medium focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
+                <option value="1st">1st</option>
+                <option value="2nd">2nd</option>
+                <option value="3rd">3rd</option>
+                <option value="4th">4th</option>
+                <option value="5th">5th</option>
+                <option value="N/A">N/A</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Disposition</label>
+              <select id="outboundDisposition" onchange="updateOutboundTemplate()" class="w-full text-[11px] bg-white border border-slate-300 rounded p-1 font-medium focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
+                <option value="Fulfilled">Fulfilled</option>
+                <option value="Pending">Pending</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documentation Section with Switch Toggle -->
+        <div class="flex-1 p-3.5 flex flex-col bg-white">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="font-bold text-[11px] text-slate-700 uppercase tracking-wide">Documentation Template</span>
+            <div class="flex items-center gap-2">
+              <span id="outboundModeLabel" class="text-[10px] font-bold text-slate-500">Read-Only</span>
+              <label class="switch">
+                <input type="checkbox" id="outboundToggle" onchange="toggleSwitchMode('docOutboundText', 'outboundModeLabel', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+          <textarea id="docOutboundText" readonly class="w-full h-52 flex-1 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800 focus:outline-none resize-none shadow-inner cursor-not-allowed"></textarea>
+        </div>
+
+        <div class="bg-slate-50 border-t border-[#D1CCD9] p-3.5 flex items-center justify-between">
+          <button type="button" onclick="openHistoryModal('left')" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded shadow-2xs cursor-pointer transition-colors">
+            History
+          </button>
+          <button type="button" onclick="copyExtractorText('docOutboundText', this)" class="px-5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded shadow-2xs cursor-pointer transition-colors">
+            Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- INBOUND COLUMN -->
+      <div class="flex flex-col workspace-card bg-white rounded-xl overflow-hidden">
+        <div class="bg-gradient-to-r from-[#552586] to-[#68339E] text-white px-4 py-2.5 flex items-center justify-between shadow-xs">
+          <span class="font-bold text-xs uppercase tracking-wider">Inbound</span>
+          <button type="button" onclick="downloadText('docInboundText', 'Inbound_Notes.txt')" class="text-xs bg-black/20 hover:bg-black/30 px-2.5 py-1 rounded font-semibold cursor-pointer flex items-center gap-1 transition-colors shadow-2xs" title="Download Inbound Notes">
+            📥 DL
+          </button>
+        </div>
+
+        <!-- Data Extractor & Controls Section -->
+        <div class="bg-slate-50/80 border-b border-[#D1CCD9] p-3.5 flex flex-col gap-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-[11px] text-slate-700 uppercase tracking-wide">Data Extractor</span>
+            <select id="inboundTemplateSelect" onchange="updateInboundTemplate()" class="text-[11px] font-semibold bg-white border border-slate-300 rounded px-2 py-1 text-slate-800 focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
+              <option value="non-move">FOR NON MOVE</option>
+              <option value="move">FOR MOVES</option>
+            </select>
+          </div>
+          <textarea id="extractorRightText" placeholder="Paste raw DOMS notes here..." class="w-full h-20 p-2.5 bg-white border border-slate-300 rounded text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
+          
+          <!-- Connection ID & Disposition Controls -->
+          <div class="grid grid-cols-2 gap-2.5 pt-0.5">
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Connection ID</label>
+              <input type="text" id="inboundConnectionId" oninput="updateInboundTemplate()" placeholder="Enter Connection ID..." class="w-full text-[11px] bg-white border border-slate-300 rounded p-1 font-mono text-slate-800 focus:outline-none focus:border-[#552586] shadow-2xs">
+            </div>
+            <div>
+              <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Disposition</label>
+              <select id="inboundDisposition" onchange="updateInboundTemplate()" class="w-full text-[11px] bg-white border border-slate-300 rounded p-1 font-medium focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
+                <option value="Fulfilled">Fulfilled</option>
+                <option value="Pending">Pending</option>
+                <option value="Cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Documentation Section with Switch Toggle -->
+        <div class="flex-1 p-3.5 flex flex-col bg-white">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="font-bold text-[11px] text-slate-700 uppercase tracking-wide">Documentation Template</span>
+            <div class="flex items-center gap-2">
+              <span id="inboundModeLabel" class="text-[10px] font-bold text-slate-500">Read-Only</span>
+              <label class="switch">
+                <input type="checkbox" id="inboundToggle" onchange="toggleSwitchMode('docInboundText', 'inboundModeLabel', this.checked)">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+          <textarea id="docInboundText" readonly class="w-full h-52 flex-1 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800 focus:outline-none resize-none shadow-inner cursor-not-allowed"></textarea>
+        </div>
+
+        <div class="bg-slate-50 border-t border-[#D1CCD9] p-3.5 flex items-center justify-between">
+          <button type="button" onclick="openHistoryModal('right')" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs rounded shadow-2xs cursor-pointer transition-colors">
+            History
+          </button>
+          <button type="button" onclick="copyExtractorText('docInboundText', this)" class="px-5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded shadow-2xs cursor-pointer transition-colors">
+            Copy
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+<!-- ==================== DITO NAGTATAPOS ANG MAIN BODY AREA ==================== -->
 
   <!-- ==================== vCLOCK EXACT ALARM RINGING POPUP MODAL ==================== -->
   <div id="vClockRingingModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-[99999] hidden flex items-center justify-center p-4">
@@ -692,23 +929,32 @@
     </div>
   </div>
 
-  <!-- ==================== MAIN WORKSPACE CANVAS ==================== -->
-  <main id="workspaceCanvas" class="flex-1 flex flex-col items-center justify-center p-6 text-doms-textMuted select-none">
-    <div class="text-center max-w-lg bg-white border border-doms-border p-6 rounded shadow-sm">
-      <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-purple-50 text-doms-purple text-xs font-bold mb-3 border border-purple-200">
-        <span>Verified Agent:</span>
-        <span id="canvasAgentXid" class="font-mono">--</span>
-      </div>
-      <p class="font-bold text-doms-textMain text-base">DFC Operations Dashboard</p>
-      <p class="mt-2 text-doms-textMuted leading-relaxed">
-        Workspace is unlocked. Click the headset menu above to access your verified profile, quick tools, and settings.
-      </p>
-    </div>
-  </main>
-
   <footer class="border-t border-doms-border py-3 px-6 text-center text-xs text-doms-textMuted bg-doms-card">
     DFC / Digital Fulfillment Center &bull; Home Solution
   </footer>
+
+  <!-- SLIDE-IN POPUP TEMPLATE CARD -->
+  <div id="templateModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-[99999] hidden flex items-center justify-start pl-36 p-4 transition-opacity duration-200">
+    <div id="modalCardBox" class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden border border-[#552586]/30 transform -translate-x-8 opacity-0 transition-all duration-300">
+      <div class="bg-gradient-to-r from-[#552586] to-[#68339E] text-white px-5 py-3.5 flex items-center justify-between">
+        <span id="modalTitle" class="font-bold text-sm tracking-wide">Template Card</span>
+        <button type="button" onclick="closeTemplateModal()" class="text-white/80 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-4 space-y-3">
+        <textarea id="modalTextarea" class="w-full h-52 p-3 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
+        
+        <div class="flex items-center justify-end gap-2 pt-1">
+          <button type="button" onclick="closeTemplateModal()" class="px-4 py-1.5 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded text-xs font-semibold cursor-pointer">
+            Close
+          </button>
+          <button type="button" onclick="copyModalText(this)" class="px-5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold cursor-pointer shadow-sm">
+            Copy Template
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ==================== vCLOCK EXACT ALARM RINGING POPUP MODAL ==================== -->
   <div id="vClockRingingModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-[99999] hidden flex items-center justify-center p-4">
@@ -1079,6 +1325,182 @@
         updateMyStatus(true);
       }
     }, 15000);
+
+    function updateOutboundTemplate() {
+      const type = document.getElementById('outboundTemplateSelect').value;
+      const attempt = document.getElementById('outboundAttempt').value;
+      const disposition = document.getElementById('outboundDisposition').value;
+      const callAttemptDisp = `${attempt} / ${disposition}`;
+
+      let text = "";
+      if (type === 'non-move') {
+        text = `Digital Fulfillment Center | Transfer customers in WWE using FFH HS
+Call attempt/ Disposition: ${callAttemptDisp}
+Sales order ID (CSR):  
+Requested by:
+CID: 
+Service Address:
+
+Order Information: 
+Match Info/Verification: 
+Reason for Fallout:
+Resolution:
+Outcome: `;
+      } else {
+        text = `Digital Fulfillment Center | Transfer customers in WWE using FFH HS 
+Call attempt/ Disposition: ${callAttemptDisp}
+Sales order ID (CSR):
+Requested by:
+CID: 
+Current Service Address:
+New Service Address: 
+
+Order Information:`;
+      }
+      document.getElementById('docOutboundText').value = text;
+    }
+
+    function updateInboundTemplate() {
+      const type = document.getElementById('inboundTemplateSelect').value;
+      const connId = document.getElementById('inboundConnectionId').value;
+      const disposition = document.getElementById('inboundDisposition').value;
+
+      let text = "";
+      if (type === 'non-move') {
+        text = `Digital Fulfillment Center | Transfer customers in WWE using FFH HS
+Call attempt: Inbound
+Connection ID: ${connId}
+Disposition: ${disposition}
+Sales Order:  
+Requested by:
+CID: 
+Service Address:
+
+Order Information: 
+> cx called in | vrfy thru:
+> Request
+> Concern:`;
+      } else {
+        text = `Digital Fulfillment Center | Transfer customers in WWE using FFH HS
+Call attempt: Inbound
+Connection ID: ${connId}
+Disposition: ${disposition}
+Sales Order:  
+Requested by:
+CID: 
+Current Service Address:
+New Service Address: 
+
+Order Information: 
+> cx called in | vrfy thru:
+> Request
+> Concern:`;
+      }
+      document.getElementById('docInboundText').value = text;
+    }
+
+    function toggleSwitchMode(textareaId, labelId, isEditable) {
+      const textarea = document.getElementById(textareaId);
+      const label = document.getElementById(labelId);
+
+      if (isEditable) {
+        textarea.removeAttribute('readonly');
+        textarea.classList.remove('cursor-not-allowed', 'bg-slate-50');
+        textarea.classList.add('bg-white', 'border-[#552586]');
+        label.textContent = 'Editable';
+        label.style.color = '#552586';
+      } else {
+        textarea.setAttribute('readonly', 'true');
+        textarea.classList.add('cursor-not-allowed', 'bg-slate-50');
+        textarea.classList.remove('bg-white', 'border-[#552586]');
+        label.textContent = 'Read-Only';
+        label.style.color = '#6B6577';
+      }
+    }
+
+    const sidePopupTemplates = {
+      "email": "Email Template:\nDear Valued Customer,\n\nThank you for contacting Digital Fulfillment Center regarding your account update. We are processing your request.\n\nBest regards,\nTelus DFC Team",
+      "verint": "Verint Interaction Notes:\nAgent ID: \nDisposition Code: \nCustomer Verified: Yes\nNotes: Successfully handled customer inquiry.",
+      "cancellation": "Cancellation Request Log:\nReason for Cancellation: \nRetention Attempt Made: \nAccount Status: Pending Closure"
+    };
+
+    function triggerSideSlide(type, btnElement) {
+      document.querySelectorAll('.edge-tab-pill').forEach(el => el.classList.remove('active-slide'));
+      btnElement.classList.add('active-slide');
+
+      const titles = {
+        "email": "Email Template",
+        "verint": "Verint Template",
+        "cancellation": "Cancellation Template"
+      };
+      
+      document.getElementById('modalTitle').textContent = titles[type] || "Template Card";
+      document.getElementById('modalTextarea').value = sidePopupTemplates[type] || "";
+      
+      const modal = document.getElementById('templateModal');
+      const cardBox = document.getElementById('modalCardBox');
+      
+      modal.classList.remove('hidden');
+      
+      requestAnimationFrame(() => {
+        cardBox.classList.remove('-translate-x-8', 'opacity-0');
+        cardBox.classList.add('translate-x-0', 'opacity-100');
+      });
+    }
+
+    function closeTemplateModal() {
+      document.querySelectorAll('.edge-tab-pill').forEach(el => el.classList.remove('active-slide'));
+      
+      const modal = document.getElementById('templateModal');
+      const cardBox = document.getElementById('modalCardBox');
+      
+      cardBox.classList.remove('translate-x-0', 'opacity-100');
+      cardBox.classList.add('-translate-x-8', 'opacity-0');
+      
+      setTimeout(() => {
+        modal.classList.add('hidden');
+      }, 250);
+    }
+
+    function copyModalText(btn) {
+      const textarea = document.getElementById('modalTextarea');
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+
+    function copyExtractorText(textareaId, btn) {
+      const textarea = document.getElementById(textareaId);
+      if (!textarea || !textarea.value.trim()) return;
+      
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        const orig = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = orig, 1500);
+      });
+    }
+
+    function downloadText(textareaId, filename) {
+      const text = document.getElementById(textareaId).value;
+      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function openHistoryModal(side) {
+      alert(`History log for ${side === 'left' ? 'Outbound' : 'Inbound'} will show previous copied entries here.`);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      updateOutboundTemplate();
+      updateInboundTemplate();
+    });
 
     function updateMyStatus(idle) {
       const storedXid = localStorage.getItem('dfc_agent_xid');
