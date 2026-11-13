@@ -1681,13 +1681,22 @@ Order Information:
       connectedRef.on('value', (snapshot) => {
         if (snapshot.val() === false) return;
 
+        const readableDate = new Date().toLocaleString([], { 
+          month: 'short', 
+          day: 'numeric', 
+          year: 'numeric',
+          hour: '2-digit', 
+          minute: '2-digit', 
+          second: '2-digit' 
+        });
+
         userStatusRef.onDisconnect().remove().then(() => {
           userStatusRef.set({
-            xid: xid.toLowerCase(),
-            email: email ? email.toLowerCase() : '',
-            status: 'active',
-            lastSeen: firebase.database.ServerValue.TIMESTAMP
-          });
+          xid: xid.toLowerCase(),
+          email: email ? email.toLowerCase() : '',
+          status: 'active',
+          lastSeen: readableDate // <-- String na ang ise-save ngayon sa Firebase
+        });
         });
       });
     }
