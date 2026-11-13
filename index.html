@@ -2056,6 +2056,19 @@ Order Information:
       renderAgentList(allActiveAgents);
     });
 
+    function formatLastSeen(timestamp) {
+      if (!timestamp) return 'N/A';
+      const date = new Date(timestamp);
+      return date.toLocaleString([], { 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric',
+        hour: '2-digit', 
+        minute: '2-digit', 
+        second: '2-digit' 
+      });
+    }
+
     function renderAgentList(agents) {
       const activeListElem = document.getElementById('activeAgentsList');
       const query = searchActiveAgent?.value.toLowerCase().trim() || '';
@@ -2074,6 +2087,9 @@ Order Information:
           const statusColor = isIdle ? 'bg-amber-500' : 'bg-emerald-500';
           const statusText = isIdle ? 'Idle' : 'Active';
 
+          // Tawagin ang formatLastSeen dito para lumabas ang kumpletong date at oras
+          const formattedTime = formatLastSeen(agent.lastSeen);
+
           const li = document.createElement('li');
           li.className = 'px-2 py-1.5 hover:bg-purple-50/50 flex flex-col justify-center';
           li.innerHTML = `
@@ -2082,6 +2098,7 @@ Order Information:
                 <span class="w-2 h-2 rounded-full flex-shrink-0 ${statusColor}" title="${statusText}"></span>
                 <span class="truncate">${agent.email || 'No email'}</span>
               </span>
+              <span class="text-[10px] text-gray-400 font-mono">${formattedTime}</span>
             </div>
           `;
           activeListElem.appendChild(li);
