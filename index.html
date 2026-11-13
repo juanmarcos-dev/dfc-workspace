@@ -2254,10 +2254,6 @@ Order Information:
       applyLayout(savedLayout);
       if (msLayoutSelect) msLayoutSelect.value = savedLayout;
 
-      // Auto-copy
-      const savedAutoCopy = localStorage.getItem('dfc_auto_copy') === 'true';
-      if (settingAutoCopy) settingAutoCopy.checked = savedAutoCopy;
-
       // Mute Sound
       const savedMute = localStorage.getItem('dfc_mute_sound') === 'true';
       if (settingMuteSound) settingMuteSound.checked = savedMute;
