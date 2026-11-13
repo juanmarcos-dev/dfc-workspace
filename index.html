@@ -32,7 +32,184 @@
       --doms-text-muted: #6E7072;
 
       --app-font-family: Calibri, 'Segoe UI', Arial, sans-serif;
-      --workspace-font-size: 13px;
+    }
+
+    /* Button Copy Glow Animation */
+    @keyframes copyGlow {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    .copy-glow-effect {
+      animation: copyGlow 0.6s ease-out;
+      border-color: #10b981 !important;
+    }
+
+    /* dropdown option items for both Light at Midnight Purple modes */
+    select option {
+      background-color: #FFFFFF;
+      color: #2A2C2E;
+    }
+
+    body.midnight-purple-mode select option {
+      background-color: #1e1236 !important;
+      color: #f3e8ff !important;
+    }
+    /* ==================== AGENT PROFILE MODAL POLISH ==================== */
+    body.midnight-purple-mode #profileInfoModal .bg-gray-50,
+    body.midnight-purple-mode #profileInfoModal .bg-slate-50,
+    body.midnight-purple-mode #profileInfoModal .rounded {
+      background-color: #150a28 !important; /* Mas madilim na shade para lumitaw yung box */
+      border-color: #4c3182 !important;
+    }
+
+    /* Patingkarin ang mga label text sa loob ng profile modal */
+    body.midnight-purple-mode #profileInfoModal span,
+    body.midnight-purple-mode #profileInfoModal p,
+    body.midnight-purple-mode #profileInfoModal div {
+      color: #f3e8ff !important;
+    }
+
+    body.midnight-purple-mode #profileInfoModal .text-doms-textMuted {
+      color: #c4b5fd !important;
+    }
+
+    /* ==================== MIDNIGHT PURPLE STRICT FIX ==================== */
+    body.midnight-purple-mode {
+      --doms-canvas: #130b24;
+      --doms-card: #1e1236;
+      --doms-border: #3b2566;
+      --doms-text-main: #f3e8ff;
+      --doms-text-muted: #c4b5fd;
+    }
+
+    body.midnight-purple-mode .workspace-card {
+      background-color: #1e1236 !important;
+      border-color: #3b2566 !important;
+    }
+
+    body.midnight-purple-mode .workspace-card > div.bg-slate-50\/80,
+    body.midnight-purple-mode .workspace-card > div.bg-slate-50 {
+      background-color: #170d2b !important;
+      border-color: #3b2566 !important;
+    }
+
+    body.midnight-purple-mode .workspace-card span,
+    body.midnight-purple-mode .workspace-card label {
+      color: #e9d5ff !important;
+    }
+
+    /* Inputs, Selects, at Textareas */
+    body.midnight-purple-mode input[type="text"],
+    body.midnight-purple-mode select,
+    body.midnight-purple-mode textarea {
+      background-color: #120924 !important;
+      color: #ffffff !important;
+      border-color: #4c3182 !important;
+    }
+
+    body.midnight-purple-mode input::placeholder,
+    body.midnight-purple-mode textarea::placeholder {
+      color: #d8b4fe !important;
+      opacity: 1 !important;
+    }
+
+    body.midnight-purple-mode textarea[readonly] {
+      background-color: #0e071c !important;
+      color: #e2e8f0 !important;
+      border-color: #34205c !important;
+    }
+
+    body.midnight-purple-mode button[onclick^="openHistoryModal"] {
+      background-color: #321e59 !important;
+      color: #f3e8ff !important;
+    }
+    body.midnight-purple-mode button[onclick^="openHistoryModal"]:hover {
+      background-color: #432975 !important;
+    }
+
+    body.midnight-purple-mode footer {
+      background-color: #1a0f30 !important;
+      border-color: #3b2566 !important;
+      color: #c4b5fd !important;
+    }
+
+    /* LAHAT NG MODALS, DROPDOWNS, AT POPOVERS */
+    body.midnight-purple-mode .bg-white,
+    body.midnight-purple-mode #profileDropdown,
+    body.midnight-purple-mode #activeAgentsDropdown,
+    body.midnight-purple-mode #alarmPopover,
+    body.midnight-purple-mode #settingsBackdrop > div,
+    body.midnight-purple-mode #profileInfoModal > div,
+    body.midnight-purple-mode #linksBackdrop > div,
+    body.midnight-purple-mode #templateModal > div {
+      background-color: #1e1236 !important;
+      color: #f3e8ff !important;
+      border-color: #3b2566 !important;
+    }
+
+    /* PROFILE DROPDOWN MENU KUMPLETONG FIX */
+    body.midnight-purple-mode #profileDropdown {
+      background-color: #1e1236 !important;
+      border: 1px solid #3b2566 !important;
+    }
+
+    body.midnight-purple-mode #profileDropdown button {
+      background-color: transparent !important;
+      color: #f3e8ff !important; /* Matingkad na lavender/white para kita lahat */
+    }
+
+    body.midnight-purple-mode #profileDropdown button:hover {
+      background-color: #2c1a4d !important;
+      color: #ffffff !important;
+    }
+
+    /* ACTIVE AGENTS LIST TEXT FIX */
+    body.midnight-purple-mode #activeAgentsList li span,
+    body.midnight-purple-mode #activeAgentsList li div {
+      color: #f3e8ff !important;
+    }
+    body.midnight-purple-mode #activeAgentsList li:hover {
+      background-color: #2c1a4d !important;
+    }
+
+    /* Text classes */
+    body.midnight-purple-mode .text-slate-800,
+    body.midnight-purple-mode .text-slate-700,
+    body.midnight-purple-mode .text-slate-600,
+    body.midnight-purple-mode .text-gray-800,
+    body.midnight-purple-mode .text-gray-700,
+    body.midnight-purple-mode .text-doms-textMain {
+      color: #f3e8ff !important;
+    }
+
+    body.midnight-purple-mode .text-slate-500,
+    body.midnight-purple-mode .text-slate-400,
+    body.midnight-purple-mode .text-gray-400,
+    body.midnight-purple-mode .text-doms-textMuted {
+      color: #d8b4fe !important;
+    }
+
+    body.midnight-purple-mode .border-slate-200,
+    body.midnight-purple-mode .border-slate-300,
+    body.midnight-purple-mode .border-gray-100,
+    body.midnight-purple-mode .border-gray-200,
+    body.midnight-purple-mode .divide-y > * {
+      border-color: #3b2566 !important;
+    }
+
+    body.midnight-purple-mode .bg-gray-50,
+    body.midnight-purple-mode .bg-slate-100,
+    body.midnight-purple-mode .bg-slate-50 {
+      background-color: #170d2b !important;
+    }
+
+    body.midnight-purple-mode .bg-slate-200 {
+      background-color: #321e59 !important;
+      color: #f3e8ff !important;
+    }
+    body.midnight-purple-mode .bg-slate-200:hover {
+      background-color: #432975 !important;
     }
 
     *, html, body {
@@ -49,11 +226,6 @@
       background-color: var(--doms-purple);
       padding: 0.5rem 1rem;
       font-size: 12px !important;
-    }
-
-    #workspaceCanvas {
-      font-size: var(--workspace-font-size);
-      transition: font-size 0.15s ease;
     }
 
     .edge-tab-pill {
@@ -122,6 +294,7 @@
 
     .workspace-card {
       border: 1px solid var(--doms-border);
+      background-color: var(--doms-card);
       box-shadow: 0 6px 20px rgba(85, 37, 134, 0.06);
       transition: all 0.25s ease;
     }
@@ -200,30 +373,26 @@
         <!-- Dropdown -->
         <div 
           id="profileDropdown" 
-          style="background-color: #FFFFFF !important; color: #2A2C2E !important; font-size: 12px !important;"
-          class="hidden absolute left-0 top-8 w-44 border border-[#D8D8D8] rounded shadow-md py-1 z-50 divide-y divide-gray-100"
+          class="hidden absolute left-0 top-8 w-44 bg-white border border-[#D8D8D8] rounded shadow-md py-1 z-50 divide-y divide-gray-100"
         >
           <button 
             id="openProfileBtn"
             type="button" 
-            style="color: #2A2C2E !important;"
-            class="w-full text-left px-3.5 py-2 hover:bg-gray-100 transition-colors font-medium block cursor-pointer"
+            class="w-full text-left px-3.5 py-2 text-[#2A2C2E] hover:bg-gray-100 transition-colors font-medium block cursor-pointer"
           >
             Profile Info
           </button>
           <button 
             type="button" 
             onclick="alert('QA Tracker clicked')" 
-            style="color: #2A2C2E !important;"
-            class="w-full text-left px-3.5 py-2 hover:bg-gray-100 transition-colors font-medium block cursor-pointer"
+            class="w-full text-left px-3.5 py-2 text-[#2A2C2E] hover:bg-gray-100 transition-colors font-medium block cursor-pointer"
           >
             QA Tracker
           </button>
           <button 
             id="openLinksBtn"
             type="button" 
-            style="color: #2A2C2E !important;"
-            class="w-full text-left px-3.5 py-2 hover:bg-gray-100 transition-colors font-medium block cursor-pointer"
+            class="w-full text-left px-3.5 py-2 text-[#2A2C2E] hover:bg-gray-100 transition-colors font-medium block cursor-pointer"
           >
             Links
           </button>
@@ -259,7 +428,7 @@
             <input 
               id="searchActiveAgent" 
               type="text" 
-              placeholder="Search email or XID..." 
+              placeholder="Search email..." 
               class="w-full px-2.5 py-1 text-[11px] border border-gray-200 rounded focus:outline-none focus:border-[#4B286D] bg-gray-50"
             />
           </div>
@@ -356,14 +525,14 @@
           <span id="alarmCountBadge" class="bg-purple-950/90 border border-purple-500/30 px-1.5 py-0.2 rounded text-[10px] font-bold text-amber-300 shadow-inner">0</span>
         </button>
 
-        <!-- Alarm Popover (Responsive: Fixed Center on Mobile, Absolute Right on PC) -->
+        <!-- Alarm Popover -->
         <div 
           id="alarmPopover" 
           class="hidden fixed md:absolute left-4 right-4 md:left-auto md:right-0 top-16 md:top-10 max-w-sm md:w-80 bg-white border border-[#D8D8D8] rounded-xl shadow-2xl p-4 z-50 text-slate-800 space-y-3 text-xs mx-auto"
         >
-          <div class="flex items-center justify-between bg-[#0095f6] text-white -mx-4 -mt-4 p-3 rounded-t-xl">
+          <div class="flex items-center justify-between bg-[#4B286D] dark:bg-[#2c1a4d] text-white -mx-4 -mt-4 p-3 rounded-t-xl border-b border-[#3b2566]">
             <span class="font-bold text-sm tracking-wide">Edit Alarm</span>
-            <button id="closeAlarmPopover" class="text-white/80 hover:text-white text-base font-bold cursor-pointer">✕</button>
+            <button id="closeAlarmBtn" type="button" onclick="alarmPopover?.classList.add('hidden')" class="text-white/80 hover:text-white text-base font-bold cursor-pointer">✕</button>
           </div>
 
           <div class="grid grid-cols-2 gap-3 pt-1">
@@ -485,7 +654,6 @@
     </div>
 
   </header>
-  <!-- ==================== DITO NAGTATAPOS ANG HEADER AREA ==================== -->
 
   <!-- TATLONG SIDE TABS SA GILID -->
   <div class="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-3 select-none">
@@ -503,16 +671,13 @@
   <!-- ==================== MAIN WORKSPACE CANVAS ==================== -->
   <main id="workspaceCanvas" class="flex-1 p-4 md:p-6 pl-12 md:pl-14 max-w-7xl mx-auto w-full flex flex-col justify-center">
     
-    <!-- DUAL COLUMNS GRID -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-5 flex-1">
+    <!-- DUAL COLUMNS GRID (Dito nag-a-adjust ang layout order) -->
+    <div id="workspaceColumnsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5 flex-1">
       
       <!-- OUTBOUND COLUMN -->
-      <div class="flex flex-col workspace-card bg-white rounded-xl overflow-hidden">
+      <div id="outboundColumnBox" class="flex flex-col workspace-card rounded-xl overflow-hidden">
         <div class="bg-gradient-to-r from-[#552586] to-[#68339E] text-white px-4 py-2.5 flex items-center justify-between shadow-xs">
           <span class="font-bold text-xs uppercase tracking-wider">Outbound</span>
-          <button type="button" onclick="downloadText('docOutboundText', 'Outbound_Notes.txt')" class="text-xs bg-black/20 hover:bg-black/30 px-2.5 py-1 rounded font-semibold cursor-pointer flex items-center gap-1 transition-colors shadow-2xs" title="Download Outbound Notes">
-            📥 DL
-          </button>
         </div>
 
         <!-- Data Extractor & Controls Section -->
@@ -520,8 +685,8 @@
           <div class="flex items-center justify-between">
             <span class="font-bold text-[11px] text-slate-700 uppercase tracking-wide">Data Extractor</span>
             <select id="outboundTemplateSelect" onchange="updateOutboundTemplate()" class="text-[11px] font-semibold bg-white border border-slate-300 rounded px-2 py-1 text-slate-800 focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
-              <option value="non-move">FOR NON MOVE</option>
-              <option value="move">FOR MOVES</option>
+              <option value="regular">REGULAR</option>
+              <option value="move">MOVES</option>
             </select>
           </div>
           <textarea id="extractorLeftText" placeholder="Paste raw DOMS notes here..." class="w-full h-20 p-2.5 bg-white border border-slate-300 rounded text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
@@ -531,6 +696,7 @@
             <div>
               <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Call Attempt</label>
               <select id="outboundAttempt" onchange="updateOutboundTemplate()" class="w-full text-[11px] bg-white border border-slate-300 rounded p-1 font-medium focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
+                <option value="">-- Select Attempt --</option>
                 <option value="1st">1st</option>
                 <option value="2nd">2nd</option>
                 <option value="3rd">3rd</option>
@@ -542,6 +708,7 @@
             <div>
               <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Disposition</label>
               <select id="outboundDisposition" onchange="updateOutboundTemplate()" class="w-full text-[11px] bg-white border border-slate-300 rounded p-1 font-medium focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
+                <option value="">-- Select Disposition --</option>
                 <option value="Fulfilled">Fulfilled</option>
                 <option value="Pending">Pending</option>
                 <option value="Cancelled">Cancelled</option>
@@ -551,17 +718,34 @@
         </div>
 
         <!-- Documentation Section with Switch Toggle -->
-        <div class="flex-1 p-3.5 flex flex-col bg-white">
-          <div class="flex items-center justify-between mb-1.5">
+        <div class="flex-1 p-3.5 flex flex-col">
+          <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">
             <span class="font-bold text-[11px] text-slate-700 uppercase tracking-wide">Documentation Template</span>
-            <div class="flex items-center gap-2">
-              <span id="outboundModeLabel" class="text-[10px] font-bold text-slate-500">Read-Only</span>
-              <label class="switch">
-                <input type="checkbox" id="outboundToggle" onchange="toggleSwitchMode('docOutboundText', 'outboundModeLabel', this.checked)">
-                <span class="slider"></span>
-              </label>
+            
+            <div class="flex items-center gap-3">
+              <!-- 1. Default Note Switch -->
+              <div class="flex items-center gap-1.5">
+                <span id="outboundNoteLabel" class="text-[10px] font-bold text-slate-500">Default Note: On</span>
+                <label class="switch" title="Toggle Default Note">
+                  <input type="checkbox" id="outboundNoteToggle" checked onchange="updateOutboundTemplate()">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <!-- Divider line -->
+              <span class="text-slate-300">|</span>
+
+              <!-- 2. Read-Only / Editable Switch -->
+              <div class="flex items-center gap-1.5">
+                <span id="outboundModeLabel" class="text-[10px] font-bold text-slate-500">Read-Only</span>
+                <label class="switch" title="Toggle Read-Only / Editable">
+                  <input type="checkbox" id="outboundToggle" onchange="toggleSwitchMode('docOutboundText', 'outboundModeLabel', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
             </div>
           </div>
+
           <textarea id="docOutboundText" readonly class="w-full h-52 flex-1 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800 focus:outline-none resize-none shadow-inner cursor-not-allowed"></textarea>
         </div>
 
@@ -576,12 +760,9 @@
       </div>
 
       <!-- INBOUND COLUMN -->
-      <div class="flex flex-col workspace-card bg-white rounded-xl overflow-hidden">
+      <div id="inboundColumnBox" class="flex flex-col workspace-card rounded-xl overflow-hidden">
         <div class="bg-gradient-to-r from-[#552586] to-[#68339E] text-white px-4 py-2.5 flex items-center justify-between shadow-xs">
           <span class="font-bold text-xs uppercase tracking-wider">Inbound</span>
-          <button type="button" onclick="downloadText('docInboundText', 'Inbound_Notes.txt')" class="text-xs bg-black/20 hover:bg-black/30 px-2.5 py-1 rounded font-semibold cursor-pointer flex items-center gap-1 transition-colors shadow-2xs" title="Download Inbound Notes">
-            📥 DL
-          </button>
         </div>
 
         <!-- Data Extractor & Controls Section -->
@@ -589,8 +770,8 @@
           <div class="flex items-center justify-between">
             <span class="font-bold text-[11px] text-slate-700 uppercase tracking-wide">Data Extractor</span>
             <select id="inboundTemplateSelect" onchange="updateInboundTemplate()" class="text-[11px] font-semibold bg-white border border-slate-300 rounded px-2 py-1 text-slate-800 focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
-              <option value="non-move">FOR NON MOVE</option>
-              <option value="move">FOR MOVES</option>
+              <option value="regular">REGULAR</option>
+              <option value="moves">MOVES</option>
             </select>
           </div>
           <textarea id="extractorRightText" placeholder="Paste raw DOMS notes here..." class="w-full h-20 p-2.5 bg-white border border-slate-300 rounded text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
@@ -604,6 +785,7 @@
             <div>
               <label class="block text-[10px] font-bold text-slate-600 uppercase mb-0.5">Disposition</label>
               <select id="inboundDisposition" onchange="updateInboundTemplate()" class="w-full text-[11px] bg-white border border-slate-300 rounded p-1 font-medium focus:outline-none focus:border-[#552586] cursor-pointer shadow-2xs">
+                <option value="">-- Select Disposition --</option>
                 <option value="Fulfilled">Fulfilled</option>
                 <option value="Pending">Pending</option>
                 <option value="Cancelled">Cancelled</option>
@@ -613,17 +795,34 @@
         </div>
 
         <!-- Documentation Section with Switch Toggle -->
-        <div class="flex-1 p-3.5 flex flex-col bg-white">
-          <div class="flex items-center justify-between mb-1.5">
+        <div class="flex-1 p-3.5 flex flex-col">
+          <div class="flex items-center justify-between mb-1.5 flex-wrap gap-2">
             <span class="font-bold text-[11px] text-slate-700 uppercase tracking-wide">Documentation Template</span>
-            <div class="flex items-center gap-2">
-              <span id="inboundModeLabel" class="text-[10px] font-bold text-slate-500">Read-Only</span>
-              <label class="switch">
-                <input type="checkbox" id="inboundToggle" onchange="toggleSwitchMode('docInboundText', 'inboundModeLabel', this.checked)">
-                <span class="slider"></span>
-              </label>
+            
+            <div class="flex items-center gap-3">
+              <!-- 1. Default Note Switch -->
+              <div class="flex items-center gap-1.5">
+                <span id="inboundNoteLabel" class="text-[10px] font-bold text-slate-500">Default Note: On</span>
+                <label class="switch" title="Toggle Default Note">
+                  <input type="checkbox" id="inboundNoteToggle" checked onchange="updateInboundTemplate()">
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <!-- Divider line -->
+              <span class="text-slate-300">|</span>
+
+              <!-- 2. Read-Only / Editable Switch -->
+              <div class="flex items-center gap-1.5">
+                <span id="inboundModeLabel" class="text-[10px] font-bold text-slate-500">Read-Only</span>
+                <label class="switch" title="Toggle Read-Only / Editable">
+                  <input type="checkbox" id="inboundToggle" onchange="toggleSwitchMode('docInboundText', 'inboundModeLabel', this.checked)">
+                  <span class="slider"></span>
+                </label>
+              </div>
             </div>
           </div>
+
           <textarea id="docInboundText" readonly class="w-full h-52 flex-1 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs font-mono text-slate-800 focus:outline-none resize-none shadow-inner cursor-not-allowed"></textarea>
         </div>
 
@@ -640,321 +839,6 @@
     </div>
 
   </main>
-<!-- ==================== DITO NAGTATAPOS ANG MAIN BODY AREA ==================== -->
-
-  <!-- ==================== vCLOCK EXACT ALARM RINGING POPUP MODAL ==================== -->
-  <div id="vClockRingingModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-[99999] hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-lg shadow-2xl w-full max-w-md overflow-hidden border border-slate-200">
-      <div class="bg-[#e5534b] text-white px-5 py-3.5 flex items-center justify-between">
-        <span id="ringingModalTitleText" class="font-bold text-sm tracking-wide">Alarm</span>
-        <button type="button" onclick="dismissRingingAlarm()" class="text-white/80 hover:text-white text-lg font-bold cursor-pointer">✕</button>
-      </div>
-
-      <div class="p-6 text-center space-y-4">
-        <div class="w-16 h-16 rounded-full border-2 border-rose-200 text-[#e5534b] mx-auto flex items-center justify-center text-3xl">
-          ⏰
-        </div>
-        <div>
-          <h3 id="ringingModalSubTitle" class="font-bold text-slate-800 text-base">Alarm</h3>
-          <p id="ringingModalTimeText" class="text-slate-500 font-mono text-xl mt-1">--:-- --</p>
-        </div>
-        <div class="pt-2">
-          <button 
-            type="button" 
-            onclick="dismissRingingAlarm()" 
-            class="w-full py-2.5 bg-[#e5534b] hover:bg-[#d4433b] text-white rounded font-bold text-sm transition-colors shadow cursor-pointer"
-          >
-            OK
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ==================== AGENT LOGIN MODAL ==================== -->
-  <div id="authGatekeeperModal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[9999] hidden flex items-center justify-center p-4">    <div class="bg-white rounded-lg border border-doms-border w-full max-w-sm p-6 shadow-2xl text-xs space-y-4">
-      <div class="text-center space-y-1">
-        <div class="w-10 h-10 rounded-full bg-purple-100 text-doms-purple mx-auto flex items-center justify-center mb-2">
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-          </svg>
-        </div>
-        <h2 class="text-base font-bold text-doms-textMain">Agent Sign-In Required</h2>
-        <p class="text-doms-textMuted text-[11px]">Enter your Telus work email and XID to unlock the dashboard.</p>
-      </div>
-
-      <form id="xidAuthForm" onsubmit="handleAuthSubmit(event)" class="space-y-3 pt-2">
-        <div>
-          <label class="block font-semibold text-doms-textMain mb-1">Work Email (@telus.com):</label>
-          <input 
-            id="emailInput" 
-            type="email" 
-            placeholder="e.g. juan.delacruz@telus.com" 
-            autocomplete="email"
-            class="w-full px-3 py-2 border border-doms-border rounded bg-white text-doms-textMain text-xs focus:outline-none focus:border-doms-purple focus:ring-1 focus:ring-doms-purple"
-          />
-          <p id="emailErrorText" class="text-rose-600 text-[10.5px] font-medium mt-1 hidden">
-            ⚠️ Please enter a valid @telus.com work email address.
-          </p>
-        </div>
-
-        <div>
-          <label class="block font-semibold text-doms-textMain mb-1">Enter XID:</label>
-          <input 
-            id="xidInput" 
-            type="text" 
-            maxlength="7" 
-            placeholder="e.g. x123456" 
-            autocomplete="off"
-            class="w-full px-3 py-2 border border-doms-border rounded bg-white text-doms-textMain font-mono text-sm focus:outline-none focus:border-doms-purple focus:ring-1 focus:ring-doms-purple text-center lowercase placeholder:normal-case"
-          />
-          <p id="xidErrorText" class="text-rose-600 text-[10.5px] font-medium mt-1 hidden">
-            ⚠️ Invalid format! Must start with lowercase 'x' followed by 6 digits (e.g. x123456).
-          </p>
-        </div>
-
-        <button 
-          id="btnSubmitAuth"
-          type="submit" 
-          class="w-full py-2.5 bg-[#4B286D] hover:bg-[#3B1F57] text-white rounded font-bold transition-colors cursor-pointer text-xs mt-3 shadow"
-        >
-          Verify & Unlock Workspace &rarr;
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- ==================== PROFILE INFO MODAL ==================== -->
-  <div id="profileInfoModal" class="fixed inset-0 bg-black/40 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded border border-doms-border w-full max-w-sm p-5 space-y-4 shadow-xl text-xs">
-      <div class="flex items-center justify-between border-b border-doms-border pb-2.5">
-        <h2 class="text-sm font-bold text-doms-purple flex items-center gap-1.5">
-          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-          <span>Agent Profile Info</span>
-        </h2>
-        <button id="closeProfileBtn" class="text-doms-textMuted hover:text-doms-textMain p-1 cursor-pointer">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="space-y-3 bg-gray-50/70 p-3.5 border border-doms-border rounded">
-        <div>
-          <span class="text-[10px] uppercase font-bold text-doms-textMuted tracking-wider">Agent XID:</span>
-          <p id="profileModalXid" class="font-mono font-bold text-doms-textMain text-sm">--</p>
-        </div>
-
-        <div>
-          <span class="text-[10px] uppercase font-bold text-doms-textMuted tracking-wider">Active Workspace Email:</span>
-          <div class="flex items-center gap-1.5 mt-0.5">
-            <span class="text-purple-700">📧</span>
-            <p id="profileModalEmail" class="font-mono font-semibold text-doms-purple break-all select-all">--</p>
-          </div>
-        </div>
-
-        <div class="border-t border-gray-200 pt-2 flex justify-between items-center text-[11px]">
-          <span class="text-doms-textMuted">Department:</span>
-          <span class="font-medium text-doms-textMain">DFC Home Solutions</span>
-        </div>
-
-        <div class="flex justify-between items-center text-[11px]">
-          <span class="text-doms-textMuted">Session Status:</span>
-          <span class="inline-flex items-center gap-1 font-semibold text-emerald-700">
-            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Active Verified
-          </span>
-        </div>
-      </div>
-
-      <button 
-        type="button" 
-        onclick="switchAgentAccount()" 
-        class="w-full py-1.5 text-center text-rose-600 border border-rose-200 hover:bg-rose-50 rounded transition-colors font-medium text-[11px] cursor-pointer"
-      >
-        Switch Account / Update Details
-      </button>
-    </div>
-  </div>
-
-  <!-- ==================== LINKS MODAL ==================== -->
-  <div id="linksBackdrop" class="fixed inset-0 bg-black/40 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded border border-doms-border w-full max-w-md p-5 space-y-4 shadow-xl text-xs">
-      <div class="flex items-center justify-between border-b border-doms-border pb-2.5">
-        <h2 class="text-sm font-bold text-doms-purple flex items-center gap-2">
-          <span>🔗</span>
-          <span>Quick External Tools & Links</span>
-        </h2>
-        <button id="closeLinksBtn" class="text-doms-textMuted hover:text-doms-textMain p-1 cursor-pointer">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <a href="https://www.telus.com/oms/order/search" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>DOMS</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://casa.cloudapps.telus.com/" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>CASA</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://flcncapp-pr-csr.tsl.telus.com/web/guest/csr-desktop" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>CSR</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://go-send-app.cloudapps.telus.com/" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>SMS (NEW)</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://notify-agent-send.cloudapps.telus.com/send/customer-search" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>SMS (OLD)</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://synapse-prod.cloudapps.telus.com/back-ofc-emp" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>SYNAPSE</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://telus.saas.verinthms.com/GTConnect/UnifiedAcceptor/FrameworkDesktop.Main" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>VERINT</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://aes-lps.cloudapps.telus.com/SPID/SPIDsearch?lang=en" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>SPID</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://teluscom.appiancloud.com/suite/sites/asq" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>ASQ</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://go.telus.com/team" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>TeamFinder</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://flcncapp-pr.tsl.telus.com/telus/gem.jsp?appId=fifasupport" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>Fifa360</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-
-        <a href="https://dst.tsl.telus.com/" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
-          <span class="flex items-center gap-2">
-            <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
-              <polygon points="20,48 95,29 95,30 22,46" fill="#4B286D"/>
-              <path d="M18,67 C35,60 48,51 53,44 C62,32 70,28 66,35 C61,44 48,56 46,62 C44,68 47,69 57,64 C67,59 74,53 79,50" stroke="#66CC00" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-            <span>DST</span>
-          </span>
-          <span class="text-doms-textMuted text-[10px]">↗</span>
-        </a>
-      </div>
-    </div>
-  </div>
-
-  <footer class="border-t border-doms-border py-3 px-6 text-center text-xs text-doms-textMuted bg-doms-card">
-    DFC / Digital Fulfillment Center &bull; Home Solution
-  </footer>
-
-  <!-- SLIDE-IN POPUP TEMPLATE CARD -->
-  <div id="templateModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-[99999] hidden flex items-center justify-start pl-36 p-4 transition-opacity duration-200">
-    <div id="modalCardBox" class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden border border-[#552586]/30 transform -translate-x-8 opacity-0 transition-all duration-300">
-      <div class="bg-gradient-to-r from-[#552586] to-[#68339E] text-white px-5 py-3.5 flex items-center justify-between">
-        <span id="modalTitle" class="font-bold text-sm tracking-wide">Template Card</span>
-        <button type="button" onclick="closeTemplateModal()" class="text-white/80 hover:text-white text-lg font-bold cursor-pointer">✕</button>
-      </div>
-
-      <div class="p-4 space-y-3">
-        <textarea id="modalTextarea" class="w-full h-52 p-3 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
-        
-        <div class="flex items-center justify-end gap-2 pt-1">
-          <button type="button" onclick="closeTemplateModal()" class="px-4 py-1.5 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded text-xs font-semibold cursor-pointer">
-            Close
-          </button>
-          <button type="button" onclick="copyModalText(this)" class="px-5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold cursor-pointer shadow-sm">
-            Copy Template
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- ==================== vCLOCK EXACT ALARM RINGING POPUP MODAL ==================== -->
   <div id="vClockRingingModal" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-[99999] hidden flex items-center justify-center p-4">
@@ -1244,21 +1128,20 @@
     </div>
   </div>
 
-  <!-- ==================== SETTINGS MODAL ==================== -->
+  <!-- ==================== UPDATED DISPLAY SETTINGS MODAL ==================== -->
   <div id="settingsBackdrop" class="fixed inset-0 bg-black/40 z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded border border-doms-border w-full max-w-xs p-5 space-y-4 shadow-lg text-xs">
+    <div class="bg-white text-slate-800 rounded-xl border border-doms-border w-full max-w-sm p-5 space-y-4 shadow-2xl text-xs">
       <div class="flex items-center justify-between border-b border-doms-border pb-2.5">
-        <h2 class="text-sm font-bold text-doms-textMain">Display Settings</h2>
-        <button id="closeSettingsBtn" class="text-doms-textMuted hover:text-doms-textMain p-1 cursor-pointer">
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+        <h2 class="text-sm font-bold text-doms-purple flex items-center gap-1.5">
+          <span>⚙️</span> <span>Advanced Display Settings</span>
+        </h2>
+        <button id="closeSettingsBtn" class="text-slate-400 hover:text-slate-700 p-1 cursor-pointer font-bold">✕</button>
       </div>
 
-      <div class="space-y-1.5">
-        <label class="block font-semibold text-doms-textMain">Font Style (Header, Clocks & Body):</label>
-        <select id="msFontSelect" class="w-full px-3 py-2 border border-doms-border rounded bg-white text-doms-textMain focus:outline-none focus:border-doms-purple cursor-pointer">
+      <!-- 1. Font Style Setting -->
+      <div class="space-y-1">
+        <label class="block font-semibold text-slate-700">Font Style:</label>
+        <select id="msFontSelect" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-slate-800 focus:outline-none focus:border-[#4B286D] cursor-pointer">
           <option value="Calibri, 'Segoe UI', Arial, sans-serif">Calibri (Default)</option>
           <option value="Arial, Helvetica, sans-serif">Arial</option>
           <option value="'Times New Roman', Times, serif">Times New Roman</option>
@@ -1272,19 +1155,75 @@
         </select>
       </div>
 
-      <div class="space-y-1.5">
-        <label class="block font-semibold text-doms-textMain">Content Font Size (Workspace Area):</label>
-        <select id="msSizeSelect" class="w-full px-3 py-2 border border-doms-border rounded bg-white text-doms-textMain focus:outline-none focus:border-doms-purple cursor-pointer">
-          <option value="12px">12px - Small</option>
-          <option value="13px">13px - Standard (Default)</option>
-          <option value="14px">14px - Medium</option>
-          <option value="15px">15px - Large</option>
-          <option value="16px">16px - Extra Large</option>
+      <!-- 2. Theme Mode Setting -->
+      <div class="space-y-1">
+        <label class="block font-semibold text-slate-700">Theme Mode:</label>
+        <select id="msThemeSelect" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-slate-800 focus:outline-none focus:border-[#4B286D] cursor-pointer">
+          <option value="light">☀️ Light Mode (Default)</option>
+          <option value="midnight">🟣 Midnight Purple</option>
         </select>
-        <p class="text-[10px] text-emerald-600 font-medium pt-1 flex items-center gap-1">
-          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-          Automatically applied and saved.
-        </p>
+      </div>
+
+      <!-- 3. Column Layout Setting -->
+      <div class="space-y-1">
+        <label class="block font-semibold text-slate-700">Columns Order:</label>
+        <select id="msLayoutSelect" class="w-full px-2.5 py-1.5 border border-slate-300 rounded bg-white text-slate-800 focus:outline-none focus:border-[#4B286D] cursor-pointer">
+          <option value="outbound-first">Outbound (Left) / Inbound (Right)</option>
+          <option value="inbound-first">Inbound (Left) / Outbound (Right)</option>
+        </select>
+      </div>
+
+      <!-- Toggles Section -->
+      <div class="space-y-2 pt-1 border-t border-slate-200">
+        <!-- 4. Auto-Copy Toggle -->
+        <div class="flex items-center justify-between">
+          <span class="font-semibold text-slate-700">Auto-Copy Generated Notes</span>
+          <label class="switch">
+            <input type="checkbox" id="settingAutoCopy">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <!-- 5. Sound Mute Toggle -->
+        <div class="flex items-center justify-between">
+          <span class="font-semibold text-slate-700">Mute Alarm Audio Sounds</span>
+          <label class="switch">
+            <input type="checkbox" id="settingMuteSound">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+      <p class="text-[10px] text-emerald-600 font-medium pt-1 flex items-center gap-1 border-t border-slate-100">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        Preferences are automatically saved.
+      </p>
+    </div>
+  </div>
+
+  <footer class="border-t border-doms-border py-3 px-6 text-center text-xs text-doms-textMuted bg-doms-card">
+    DFC / Digital Fulfillment Center &bull; Home Solution
+  </footer>
+
+  <!-- SLIDE-IN POPUP TEMPLATE CARD -->
+  <div id="templateModal" class="fixed inset-0 bg-black/50 backdrop-blur-xs z-[99999] hidden flex items-center justify-start pl-36 p-4 transition-opacity duration-200">
+    <div id="modalCardBox" class="bg-white rounded-xl shadow-2xl w-full max-w-md overflow-hidden border border-[#552586]/30 transform -translate-x-8 opacity-0 transition-all duration-300">
+      <div class="bg-gradient-to-r from-[#552586] to-[#68339E] text-white px-5 py-3.5 flex items-center justify-between">
+        <span id="modalTitle" class="font-bold text-sm tracking-wide">Template Card</span>
+        <button type="button" onclick="closeTemplateModal()" class="text-white/80 hover:text-white text-lg font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="p-4 space-y-3">
+        <textarea id="modalTextarea" class="w-full h-52 p-3 bg-slate-50 border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
+        
+        <div class="flex items-center justify-end gap-2 pt-1">
+          <button type="button" onclick="closeTemplateModal()" class="px-4 py-1.5 border border-slate-300 hover:bg-slate-50 text-slate-700 rounded text-xs font-semibold cursor-pointer">
+            Close
+          </button>
+          <button type="button" onclick="copyModalText(this)" class="px-5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-bold cursor-pointer shadow-sm">
+            Copy Template
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -1330,13 +1269,25 @@
       const type = document.getElementById('outboundTemplateSelect').value;
       const attempt = document.getElementById('outboundAttempt').value;
       const disposition = document.getElementById('outboundDisposition').value;
-      const callAttemptDisp = `${attempt} / ${disposition}`;
+      const callAttemptDisp = (attempt || disposition) ? `${attempt} / ${disposition}` : '';
+      
+      // Kunin ang status ng Default Note switch
+      const includeDefaultNote = document.getElementById('outboundNoteToggle')?.checked ?? true;
+      const noteLabel = document.getElementById('outboundNoteLabel');
+      
+      if (noteLabel) {
+        noteLabel.textContent = includeDefaultNote ? "Default Note: On" : "Default Note: Off";
+      }
+
+      // Kung naka-on, may kasamang pipe text; kung naka-off, pangalan lang
+      const defaultNoteText = includeDefaultNote 
+        ? "Digital Fulfillment Center | Transfer customers in WWE using FFH HS\n" 
+        : "Digital Fulfillment Center\n";
 
       let text = "";
-      if (type === 'non-move') {
-        text = `Digital Fulfillment Center | Transfer customers in WWE using FFH HS
-Call attempt/ Disposition: ${callAttemptDisp}
-Sales order ID (CSR):  
+      if (type === 'regular') {
+        text = `${defaultNoteText}Call attempt/ Disposition: ${callAttemptDisp}
+Sales Order (CSR):  
 Requested by:
 CID: 
 Service Address:
@@ -1347,17 +1298,24 @@ Reason for Fallout:
 Resolution:
 Outcome: `;
       } else {
-        text = `Digital Fulfillment Center | Transfer customers in WWE using FFH HS 
-Call attempt/ Disposition: ${callAttemptDisp}
-Sales order ID (CSR):
+        text = `${defaultNoteText}Call attempt/ Disposition: ${callAttemptDisp}
+Sales Order (CSR):  
 Requested by:
 CID: 
 Current Service Address:
-New Service Address: 
+New Service Address:
 
-Order Information:`;
+Order Information: 
+Match Info/Verification: 
+Reason for Fallout:
+Resolution:
+Outcome: `;
       }
       document.getElementById('docOutboundText').value = text;
+      
+      if (document.getElementById('settingAutoCopy')?.checked) {
+        navigator.clipboard.writeText(text);
+      }
     }
 
     function updateInboundTemplate() {
@@ -1365,10 +1323,21 @@ Order Information:`;
       const connId = document.getElementById('inboundConnectionId').value;
       const disposition = document.getElementById('inboundDisposition').value;
 
+      // Kunin ang status ng Default Note switch para sa Inbound
+      const includeDefaultNote = document.getElementById('inboundNoteToggle')?.checked ?? true;
+      const noteLabel = document.getElementById('inboundNoteLabel');
+      
+      if (noteLabel) {
+        noteLabel.textContent = includeDefaultNote ? "Default Note: On" : "Default Note: Off";
+      }
+
+      const defaultNoteText = includeDefaultNote 
+        ? "Digital Fulfillment Center | Transfer customers in WWE using FFH HS\n" 
+        : "Digital Fulfillment Center\n";
+
       let text = "";
-      if (type === 'non-move') {
-        text = `Digital Fulfillment Center | Transfer customers in WWE using FFH HS
-Call attempt: Inbound
+      if (type === 'regular') {
+        text = `${defaultNoteText}Call attempt: Inbound
 Connection ID: ${connId}
 Disposition: ${disposition}
 Sales Order:  
@@ -1381,8 +1350,7 @@ Order Information:
 > Request
 > Concern:`;
       } else {
-        text = `Digital Fulfillment Center | Transfer customers in WWE using FFH HS
-Call attempt: Inbound
+        text = `${defaultNoteText}Call attempt: Inbound
 Connection ID: ${connId}
 Disposition: ${disposition}
 Sales Order:  
@@ -1397,6 +1365,10 @@ Order Information:
 > Concern:`;
       }
       document.getElementById('docInboundText').value = text;
+
+      if (document.getElementById('settingAutoCopy')?.checked) {
+        navigator.clipboard.writeText(text);
+      }
     }
 
     function toggleSwitchMode(textareaId, labelId, isEditable) {
@@ -1462,35 +1434,29 @@ Order Information:
       }, 250);
     }
 
-    function copyModalText(btn) {
-      const textarea = document.getElementById('modalTextarea');
-      navigator.clipboard.writeText(textarea.value).then(() => {
-        const orig = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = orig, 1500);
-      });
-    }
-
     function copyExtractorText(textareaId, btn) {
       const textarea = document.getElementById(textareaId);
       if (!textarea || !textarea.value.trim()) return;
       
       navigator.clipboard.writeText(textarea.value).then(() => {
-        const orig = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = orig, 1500);
+        // Magdagdag ng temporary green glow effect sa button
+        btn.classList.add('copy-glow-effect', 'ring-2', 'ring-emerald-400');
+        
+        // Alisin pagkatapos ng 800 milliseconds para pwedeng ma-click ulit nang malinis
+        setTimeout(() => {
+          btn.classList.remove('copy-glow-effect', 'ring-2', 'ring-emerald-400');
+        }, 800);
       });
     }
 
-    function downloadText(textareaId, filename) {
-      const text = document.getElementById(textareaId).value;
-      const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = filename;
-      a.click();
-      URL.revokeObjectURL(url);
+    function copyModalText(btn) {
+      const textarea = document.getElementById('modalTextarea');
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        btn.classList.add('copy-glow-effect', 'ring-2', 'ring-emerald-400');
+        setTimeout(() => {
+          btn.classList.remove('copy-glow-effect', 'ring-2', 'ring-emerald-400');
+        }, 800);
+      });
     }
 
     function openHistoryModal(side) {
@@ -1532,37 +1498,56 @@ Order Information:
       });
     }
 
+    // Dropdowns & Popups Exclusive Toggle Control
     const btnActiveAgents = document.getElementById('btnActiveAgents');
     const activeAgentsDropdown = document.getElementById('activeAgentsDropdown');
     const searchActiveAgent = document.getElementById('searchActiveAgent');
+    
+    const profileBtn = document.getElementById('profileBtn');
+    const profileDropdown = document.getElementById('profileDropdown');
+    
+    const openAlarmBtn = document.getElementById('openAlarmBtn');
+    const alarmPopover = document.getElementById('alarmPopover');
+
+    function closeAllDropdowns() {
+      activeAgentsDropdown?.classList.add('hidden');
+      profileDropdown?.classList.add('hidden');
+      alarmPopover?.classList.add('hidden');
+    }
 
     btnActiveAgents?.addEventListener('click', (e) => {
       e.stopPropagation();
-      activeAgentsDropdown?.classList.toggle('hidden');
-      if (!activeAgentsDropdown.classList.contains('hidden')) {
+      const isOpen = !activeAgentsDropdown?.classList.contains('hidden');
+      closeAllDropdowns();
+      if (!isOpen) {
+        activeAgentsDropdown?.classList.remove('hidden');
         searchActiveAgent?.focus();
       }
     });
 
-    const openAlarmBtn = document.getElementById('openAlarmBtn');
-    const alarmPopover = document.getElementById('alarmPopover');
-    const closeAlarmPopover = document.getElementById('closeAlarmPopover');
+    profileBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !profileDropdown?.classList.contains('hidden');
+      closeAllDropdowns();
+      if (!isOpen) {
+        profileDropdown?.classList.remove('hidden');
+      }
+    });
 
     openAlarmBtn?.addEventListener('click', (e) => {
       e.stopPropagation();
-      alarmPopover?.classList.toggle('hidden');
-    });
-
-    closeAlarmPopover?.addEventListener('click', () => {
-      alarmPopover?.classList.add('hidden');
+      const isOpen = !alarmPopover?.classList.contains('hidden');
+      closeAllDropdowns();
+      if (!isOpen) {
+        alarmPopover?.classList.remove('hidden');
+      }
     });
 
     document.addEventListener('click', (e) => {
-      if (!activeAgentsDropdown?.contains(e.target) && e.target !== btnActiveAgents) {
-        activeAgentsDropdown?.classList.add('hidden');
-      }
-      if (!alarmPopover?.contains(e.target) && e.target !== openAlarmBtn) {
-        alarmPopover?.classList.add('hidden');
+      if (!activeAgentsDropdown?.contains(e.target) && e.target !== btnActiveAgents &&
+          !profileDropdown?.contains(e.target) && e.target !== profileBtn &&
+          !alarmPopover?.contains(e.target) && e.target !== openAlarmBtn) {
+        closeAllDropdowns();
       }
     });
 
@@ -1605,6 +1590,9 @@ Order Information:
     }
 
     function playSoundTone(soundKey) {
+      // Kung naka-mute sa settings, huwag magpatugtog ng audio
+      if (document.getElementById('settingMuteSound')?.checked) return;
+
       try {
         stopSoundPreview();
         const audioUrl = alarmSounds[soundKey] || alarmSounds['bells'];
@@ -1632,7 +1620,6 @@ Order Information:
 
     function toggleSoundPreview() {
       const soundType = document.getElementById('vClockSound').value;
-
       if (!currentAlarmAudio || currentAlarmAudio.paused) {
         playSoundTone(soundType);
       } else {
@@ -1731,7 +1718,6 @@ Order Information:
     function dismissRingingAlarm() {
       const modal = document.getElementById('vClockRingingModal');
       modal.classList.add('hidden');
-      
       stopSoundPreview();
 
       if (titleFlashInterval) {
@@ -1885,8 +1871,7 @@ Order Information:
 
       const filtered = agents.filter(agent => {
         const email = (agent.email || '').toLowerCase();
-        const xid = (agent.xid || '').toLowerCase();
-        return email.includes(query) || xid.includes(query);
+        return email.includes(query);
       });
 
       if (filtered.length > 0) {
@@ -1903,7 +1888,6 @@ Order Information:
                 <span class="w-2 h-2 rounded-full flex-shrink-0 ${statusColor}" title="${statusText}"></span>
                 <span class="truncate">${agent.email || 'No email'}</span>
               </span>
-              <span class="font-mono text-[10px] text-purple-700 font-bold bg-purple-100 px-1.5 py-0.5 rounded flex-shrink-0">${agent.xid || ''}</span>
             </div>
           `;
           activeListElem.appendChild(li);
@@ -1959,7 +1943,6 @@ Order Information:
     // ================== CLOCK LOGIC ==================
     function updateClocks() {
       const now = new Date();
-
       const timeZones = {
         ab: 'America/Edmonton',
         bc: 'America/Vancouver',
@@ -1988,19 +1971,110 @@ Order Information:
     setInterval(updateClocks, 1000);
     updateClocks();
 
-    // ================== DOM UI CONTROLS & AUTH ==================
-    const profileBtn = document.getElementById('profileBtn');
-    const profileDropdown = document.getElementById('profileDropdown');
+    // ================== ADVANCED SETTINGS LOGIC ==================
+    const openSettingsBtn = document.getElementById('openSettingsBtn');
+    const settingsBackdrop = document.getElementById('settingsBackdrop');
+    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
 
-    profileBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      profileDropdown.classList.toggle('hidden');
+    openSettingsBtn?.addEventListener('click', () => {
+      settingsBackdrop.classList.remove('hidden');
     });
 
-    document.addEventListener('click', () => {
-      profileDropdown?.classList.add('hidden');
+    closeSettingsBtn?.addEventListener('click', () => {
+      settingsBackdrop.classList.add('hidden');
     });
 
+    const closeAlarmBtn = document.getElementById('closeAlarmBtn');
+    closeAlarmBtn?.addEventListener('click', () => {
+      alarmPopover?.classList.add('hidden');
+    });
+
+    const msFontSelect = document.getElementById('msFontSelect');
+    const msThemeSelect = document.getElementById('msThemeSelect');
+    const msLayoutSelect = document.getElementById('msLayoutSelect');
+    const settingAutoCopy = document.getElementById('settingAutoCopy');
+    const settingMuteSound = document.getElementById('settingMuteSound');
+
+    msFontSelect?.addEventListener('change', (e) => {
+      const val = e.target.value;
+      document.documentElement.style.setProperty('--app-font-family', val);
+      localStorage.setItem('dfc_font_family', val);
+    });
+
+    msThemeSelect?.addEventListener('change', (e) => {
+      applyTheme(e.target.value);
+      localStorage.setItem('dfc_theme_mode', e.target.value);
+    });
+
+    msLayoutSelect?.addEventListener('change', (e) => {
+      applyLayout(e.target.value);
+      localStorage.setItem('dfc_layout_order', e.target.value);
+    });
+
+    settingAutoCopy?.addEventListener('change', (e) => {
+      localStorage.setItem('dfc_auto_copy', e.target.checked);
+    });
+
+    settingMuteSound?.addEventListener('change', (e) => {
+      localStorage.setItem('dfc_mute_sound', e.target.checked);
+    });
+
+    function applyTheme(theme) {
+      document.body.classList.remove('dark-mode', 'midnight-purple-mode');
+      if (theme === 'midnight') {
+        document.body.classList.add('midnight-purple-mode');
+      } else {
+        // Fallback sa light mode kung 'dark' ang dating naka-save
+        if (msThemeSelect) msThemeSelect.value = 'light';
+        localStorage.setItem('dfc_theme_mode', 'light');
+      }
+    }
+
+    function applyLayout(layout) {
+      const grid = document.getElementById('workspaceColumnsGrid');
+      const outbound = document.getElementById('outboundColumnBox');
+      const inbound = document.getElementById('inboundColumnBox');
+      if (!grid || !outbound || !inbound) return;
+
+      if (layout === 'inbound-first') {
+        grid.innerHTML = '';
+        grid.appendChild(inbound);
+        grid.appendChild(outbound);
+      } else {
+        grid.innerHTML = '';
+        grid.appendChild(outbound);
+        grid.appendChild(inbound);
+      }
+    }
+
+    function loadAllDisplaySettings() {
+      // Font
+      const savedFont = localStorage.getItem('dfc_font_family');
+      if (savedFont) {
+        document.documentElement.style.setProperty('--app-font-family', savedFont);
+        if (msFontSelect) msFontSelect.value = savedFont;
+      }
+
+      // Theme
+      const savedTheme = localStorage.getItem('dfc_theme_mode') || 'light';
+      applyTheme(savedTheme);
+      if (msThemeSelect) msThemeSelect.value = savedTheme;
+
+      // Layout
+      const savedLayout = localStorage.getItem('dfc_layout_order') || 'outbound-first';
+      applyLayout(savedLayout);
+      if (msLayoutSelect) msLayoutSelect.value = savedLayout;
+
+      // Auto-copy
+      const savedAutoCopy = localStorage.getItem('dfc_auto_copy') === 'true';
+      if (settingAutoCopy) settingAutoCopy.checked = savedAutoCopy;
+
+      // Mute Sound
+      const savedMute = localStorage.getItem('dfc_mute_sound') === 'true';
+      if (settingMuteSound) settingMuteSound.checked = savedMute;
+    }
+
+    // Modal Navs
     const openProfileBtn = document.getElementById('openProfileBtn');
     const profileInfoModal = document.getElementById('profileInfoModal');
     const closeProfileBtn = document.getElementById('closeProfileBtn');
@@ -2026,47 +2100,6 @@ Order Information:
     closeLinksBtn?.addEventListener('click', () => {
       linksBackdrop.classList.add('hidden');
     });
-
-    const openSettingsBtn = document.getElementById('openSettingsBtn');
-    const settingsBackdrop = document.getElementById('settingsBackdrop');
-    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-
-    openSettingsBtn?.addEventListener('click', () => {
-      settingsBackdrop.classList.remove('hidden');
-    });
-
-    closeSettingsBtn?.addEventListener('click', () => {
-      settingsBackdrop.classList.add('hidden');
-    });
-
-    const msFontSelect = document.getElementById('msFontSelect');
-    const msSizeSelect = document.getElementById('msSizeSelect');
-
-    msFontSelect?.addEventListener('change', (e) => {
-      const val = e.target.value;
-      document.documentElement.style.setProperty('--app-font-family', val);
-      localStorage.setItem('dfc_font_family', val);
-    });
-
-    msSizeSelect?.addEventListener('change', (e) => {
-      const val = e.target.value;
-      document.documentElement.style.setProperty('--workspace-font-size', val);
-      localStorage.setItem('dfc_workspace_size', val);
-    });
-
-    function loadDisplaySettings() {
-      const savedFont = localStorage.getItem('dfc_font_family');
-      if (savedFont) {
-        document.documentElement.style.setProperty('--app-font-family', savedFont);
-        if (msFontSelect) msFontSelect.value = savedFont;
-      }
-
-      const savedSize = localStorage.getItem('dfc_workspace_size');
-      if (savedSize) {
-        document.documentElement.style.setProperty('--workspace-font-size', savedSize);
-        if (msSizeSelect) msSizeSelect.value = savedSize;
-      }
-    }
 
     function validateXid(xid) {
       return /^x\d{6}$/.test(xid.trim());
@@ -2147,7 +2180,7 @@ Order Information:
 
     window.addEventListener('DOMContentLoaded', () => {
       loadTrackerState();
-      loadDisplaySettings();
+      loadAllDisplaySettings();
       checkAuthOnLoad();
       renderVClockUI();
       autoSyncCurrentTimeDropdowns();
