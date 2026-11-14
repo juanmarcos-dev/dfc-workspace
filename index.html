@@ -530,20 +530,29 @@
             <button type="button" onclick="document.getElementById('extractorSetupPopover')?.classList.add('hidden')" class="text-white/80 hover:text-white text-sm font-bold cursor-pointer">✕</button>
           </div>
 
-          <div class="flex items-center justify-between pt-1">
-            <span class="text-[10.5px] font-semibold text-slate-600">Drag button to Bookmarks Bar:</span>
-            <span class="text-[9.5px] bg-purple-100 text-[#4B286D] px-1.5 py-0.5 rounded font-bold">Ctrl+Shift+B</span>
+          <!-- Clear Instruction for Bookmarks Bar -->
+          <div class="bg-purple-50 border border-purple-200 rounded-lg p-2 text-[10.5px] text-slate-700 leading-snug">
+            <span class="font-bold text-[#4B286D]">Bookmarks Bar hidden?</span> Press 
+            <kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded shadow-2xs font-mono font-bold text-[9.5px] text-slate-800">Ctrl</kbd> + 
+            <kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded shadow-2xs font-mono font-bold text-[9.5px] text-slate-800">Shift</kbd> + 
+            <kbd class="px-1.5 py-0.5 bg-white border border-slate-300 rounded shadow-2xs font-mono font-bold text-[9.5px] text-slate-800">B</kbd> 
+            to show/hide the top Bookmarks Bar, then drag the button below onto it:
           </div>
 
-          <!-- Draggable Bookmarklet Button -->
-          <a 
-            id="dfcBookmarkletLink"
-            href="#"
-            onclick="event.preventDefault(); alert('Huwag i-click dito! I-drag mo itong purple button pataas papunta sa Bookmarks Bar ng browser mo.');"
-            class="w-full py-2 px-3 bg-[#4B286D] hover:bg-[#3B1F57] text-white rounded-md font-bold text-center block shadow-sm cursor-grab active:cursor-grabbing transition-transform hover:scale-[1.01]"
-          >
-            ⚡ Send to DFC
-          </a>
+          <!-- 3D Tactile Draggable Button -->
+          <div class="pt-0.5">
+            <a 
+              id="dfcBookmarkletLink"
+              href="#"
+              onclick="event.preventDefault(); alert('Do not click here! Drag and drop this button up onto your browser\'s Bookmarks Bar.');"
+              class="w-full py-2.5 px-4 bg-gradient-to-b from-[#68339E] to-[#4B286D] hover:from-[#763bb3] hover:to-[#552586] text-white rounded-lg font-bold text-xs flex items-center justify-center gap-2 border border-[#3B1F57] border-b-4 border-b-[#2c1542] shadow-md hover:shadow-lg cursor-grab active:cursor-grabbing active:border-b active:translate-y-0.5 transition-all select-none"
+            >
+              <span class="text-white/60 text-sm leading-none">⋮⋮</span>
+              <span class="text-amber-300">⚡</span>
+              <span>Send to DFC</span>
+              <span class="text-[9px] uppercase tracking-wider bg-black/25 px-1.5 py-0.5 rounded text-purple-100 ml-1">Drag Me</span>
+            </a>
+          </div>
 
           <!-- Compact 3-Step Visual Guide -->
           <div class="grid grid-cols-3 gap-1.5 bg-slate-50 border border-slate-200 rounded-lg p-2 text-[9.5px] text-center">
@@ -552,7 +561,7 @@
                 <span class="text-purple-700 font-bold block leading-none">↑</span>
                 <span class="bg-[#4B286D] text-white text-[7.5px] px-1 py-0.5 rounded inline-block mt-0.5">⚡ Send to DFC</span>
               </div>
-              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">1. Drag</strong> to Bookmarks</p>
+              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">1. Drag</strong> to top Bookmarks Bar</p>
             </div>
 
             <div class="bg-white p-1.5 rounded border border-slate-200 space-y-1">
@@ -560,7 +569,7 @@
                 <span class="text-[8.5px] font-bold text-slate-700 bg-white px-1 py-0.5 rounded border border-slate-200">DOMS Tab</span>
                 <span class="text-[8px] text-emerald-600 font-bold block mt-0.5">Click ⚡</span>
               </div>
-              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">2. Click</strong> while on DOMS</p>
+              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">2. Click</strong> bookmark on DOMS</p>
             </div>
 
             <div class="bg-white p-1.5 rounded border border-slate-200 space-y-1">
@@ -568,7 +577,7 @@
                 <span class="text-[8.5px] font-bold text-purple-800 bg-purple-100 px-1 py-0.5 rounded">DFC Tab</span>
                 <span class="text-[8px] text-emerald-600 font-bold block mt-0.5">Allow ✓</span>
               </div>
-              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">3. Switch</strong> &amp; Allow</p>
+              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">3. Switch</strong> back &amp; Allow</p>
             </div>
           </div>
         </div>
