@@ -2499,12 +2499,15 @@ Order Information:
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      window.name = 'DFC_WORKSPACE_TAB';
       loadTrackerState();
       loadAllDisplaySettings();
       checkAuthOnLoad();
       renderVClockUI();
       autoSyncCurrentTimeDropdowns();
       requestBrowserPermissions();
+      initDomsBookmarklet();
+      checkIncomingBookmarkletData();
     });
 </script>
 </body>
