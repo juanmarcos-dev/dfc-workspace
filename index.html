@@ -1507,41 +1507,50 @@ Order Information:
       document.getElementById('docInboundText').value = text;
     }
 
-    // I-setup ang Bookmarklet URL dynamically base sa Vercel domain mo
+    // 1. Bookmarklet na nagko-copy sa clipboard (Walang binubuksang bagong tab!)
     function initDomsBookmarklet() {
       const linkEl = document.getElementById('dfcBookmarkletLink');
       if (!linkEl) return;
 
-      const workspaceUrl = window.location.origin + window.location.pathname;
       const bookmarkletCode = `(function(){
-        var raw = document.body.innerText || '';
-        var url = window.location.href;
-        var payload = url + '\\n' + raw;
-        var target = '${workspaceUrl}?doms_data=' + encodeURIComponent(payload);
-        window.open(target, 'DFC_WORKSPACE_TAB');
+        var payload = 'DFC_EXTRACT_PAYLOAD\\n' + window.location.href + '\\n' + (document.body.innerText || '');
+        navigator.clipboard.writeText(payload).then(function(){
+          var toast = document.createElement('div');
+          toast.textContent = '✅ Extracted! Switch to DFC Workspace tab.';
+          toast.style.cssText = 'position:fixed;top:16px;right:16px;background:#4B286D;color:#fff;padding:12px 18px;border-radius:8px;font-family:sans-serif;font-size:13px;font-weight:bold;z-index:999999;box-shadow:0 4px 12px rgba(0,0,0,0.3);';
+          document.body.appendChild(toast);
+          setTimeout(function(){ toast.remove(); }, 2500);
+        }).catch(function(){
+          alert('Clipboard blocked. Press Ctrl+A then Ctrl+C instead.');
+        });
       })();`;
 
       linkEl.setAttribute('href', 'javascript:' + encodeURIComponent(bookmarkletCode));
     }
 
-    // Basahin kung may ipinasang data galing sa Bookmarklet pag-load o pag-focus ng tab
-    function checkIncomingBookmarkletData() {
-      const params = new URLSearchParams(window.location.search);
-      const incomingData = params.get('doms_data');
-      if (incomingData) {
-        const leftExtractor = document.getElementById('extractorLeftText');
-        if (leftExtractor) {
-          leftExtractor.value = incomingData;
-          updateOutboundTemplate();
+    // 2. Kusa niyang babasahin ang clipboard pagbalik mo sa DFC Workspace tab
+    async function autoReadDomsClipboard() {
+      try {
+        const clipText = await navigator.clipboard.readText();
+        if (clipText && clipText.startsWith('DFC_EXTRACT_PAYLOAD')) {
+          const cleanPayload = clipText.replace('DFC_EXTRACT_PAYLOAD\n', '');
+          const leftExtractor = document.getElementById('extractorLeftText');
+          if (leftExtractor && leftExtractor.value !== cleanPayload) {
+            leftExtractor.value = cleanPayload;
+            updateOutboundTemplate();
+          }
+          // Linisin ang clipboard para hindi paulit-ulit na mag-trigger
+          await navigator.clipboard.writeText('');
         }
-        // Linisin ang URL parameter pagkatapos ma-extract para malinis ang address bar
-        window.history.replaceState({}, document.title, window.location.pathname);
+      } catch (err) {
+        // Silent fail kung hindi pa naka-grant ang clipboard permission
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initDomsBookmarklet();
-      checkIncomingBookmarkletData();
+    // I-trigger tuwing bumabalik ka sa DFC Workspace tab
+    window.addEventListener('focus', autoReadDomsClipboard);
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') autoReadDomsClipboard();
     });
 
     function toggleSwitchMode(textareaId, labelId, isEditable) {
@@ -2499,7 +2508,6 @@ Order Information:
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      window.name = 'DFC_WORKSPACE_TAB';
       loadTrackerState();
       loadAllDisplaySettings();
       checkAuthOnLoad();
@@ -2507,7 +2515,6 @@ Order Information:
       autoSyncCurrentTimeDropdowns();
       requestBrowserPermissions();
       initDomsBookmarklet();
-      checkIncomingBookmarkletData();
     });
 </script>
 </body>
