@@ -530,6 +530,20 @@
             <button type="button" onclick="document.getElementById('extractorSetupPopover')?.classList.add('hidden')" class="text-white/80 hover:text-white text-sm font-bold cursor-pointer">✕</button>
           </div>
 
+          <!-- Auto-Fill Target Selector -->
+          <div class="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-lg px-2.5 py-1.5">
+            <span class="text-[10.5px] font-bold text-slate-700">Auto-Fill Target:</span>
+            <select 
+              id="extractorTargetMode" 
+              onchange="localStorage.setItem('dfc_extractor_target', this.value)"
+              class="text-[10.5px] font-bold bg-white border border-slate-300 rounded px-2 py-0.5 text-[#4B286D] cursor-pointer focus:outline-none focus:border-[#4B286D]"
+            >
+              <option value="both">Both (Outbound &amp; Inbound)</option>
+              <option value="outbound">Outbound Only</option>
+              <option value="inbound">Inbound Only</option>
+            </select>
+          </div>
+
           <!-- Clear Instruction for Bookmarks Bar -->
           <div class="bg-purple-50 border border-purple-200 rounded-lg p-2 text-[10.5px] text-slate-700 leading-snug">
             <span class="font-bold text-[#4B286D]">Bookmarks Bar hidden?</span> Press 
@@ -1418,20 +1432,19 @@
       return (index !== -1 && index + 1 < lines.length) ? lines[index + 1].trim() : '';
     }
 
-    let lastDomsCache = { orderId: '', requestedBy: '', serviceAddress: '', currentAddress: '' };
+    let lastDomsCache = { orderId: '', requestedBy: '', cid: '', serviceAddress: '', currentAddress: '' };
 
     function parseDomsNotes(rawText) {
       if (!rawText || !rawText.trim()) return null;
 
       const lines = rawText.split('\n').map(l => l.trim()).filter(l => l !== '');
 
-      // Kunin ang Order / Lead ID (e.g., TD3277462 o PY4EZ644H6JUJ31J) para malaman kung parehong order pa rin
+      // Kunin ang Order / Lead ID
       const idMatch = rawText.match(/(?:Fulfillment ID|Lead|Reference ID)\s*#([A-Z0-9]+)/i) || rawText.match(/\/oms\/(?:order|lead)\/([A-Z0-9]+)/i);
       const currentId = idMatch ? idMatch[1].toUpperCase() : '';
 
-      // Kung bagong Order/Lead ID na, i-reset ang cache
       if (currentId && lastDomsCache.orderId !== currentId) {
-        lastDomsCache = { orderId: currentId, requestedBy: '', serviceAddress: '', currentAddress: '' };
+        lastDomsCache = { orderId: currentId, requestedBy: '', cid: '', serviceAddress: '', currentAddress: '' };
       }
 
       // 1. Requested by (First name + Last name)
@@ -1440,14 +1453,20 @@
       const newName = `${firstName} ${lastName}`.trim();
       if (newName) lastDomsCache.requestedBy = newName;
 
-      // 2. Service Address / New Service Address
+      // 2. CID (Mula sa Additional Customer Details — kukunin lang kung puro numero)
+      const rawCid = getLineAfter(lines, 'Additional Customer Details');
+      if (rawCid && /^\d+$/.test(rawCid)) {
+        lastDomsCache.cid = rawCid;
+      }
+
+      // 3. Service Address / New Service Address
       const addrBase = getLineAfter(lines, 'service address') || getLineAfter(lines, 'address');
       const unitVal = getLineAfter(lines, 'unit');
       const hasUnit = unitVal && !['unitnumber', 'lpdsid', 'fmsid', 'n/a', 'service details'].includes(unitVal.toLowerCase());
       const newServiceAddr = addrBase ? (hasUnit ? `${unitVal} ${addrBase}` : addrBase) : '';
       if (newServiceAddr) lastDomsCache.serviceAddress = newServiceAddr;
 
-      // 3. Current Service Address (Para sa Moves)
+      // 4. Current Service Address (Para sa Moves)
       const currHomeIdx = lines.findIndex(l => l.toLowerCase().includes('tell us about your current home'));
       if (currHomeIdx !== -1) {
         const currLines = lines.slice(currHomeIdx);
@@ -1464,6 +1483,7 @@
 
       return {
         requestedBy: lastDomsCache.requestedBy,
+        cid: lastDomsCache.cid,
         serviceAddress: lastDomsCache.serviceAddress,
         currentAddress: lastDomsCache.currentAddress
       };
@@ -1500,7 +1520,7 @@
         text = `${defaultNoteText}Call attempt/ Disposition: ${callAttemptDisp}
 Sales Order (CSR):  
 Requested by: ${extracted ? extracted.requestedBy : ''}
-CID: 
+CID: ${extracted ? extracted.cid : ''}
 Service Address: ${extracted ? extracted.serviceAddress : ''}
 
 Order Information: 
@@ -1557,7 +1577,7 @@ Connection ID: ${connId}
 Disposition: ${disposition}
 Sales Order:  
 Requested by: ${extracted ? extracted.requestedBy : ''}
-CID: 
+CID: ${extracted ? extracted.cid : ''}
 Service Address: ${extracted ? extracted.serviceAddress : ''}
 
 Order Information: 
@@ -1610,17 +1630,29 @@ Order Information:
     if (clipText && clipText.startsWith('DFC_EXTRACT_PAYLOAD')) {
       const cleanPayload = clipText.replace(/^DFC_EXTRACT_PAYLOAD\r?\n/, '');
       const leftExtractor = document.getElementById('extractorLeftText');
-      if (leftExtractor) {
-        // I-append kung magkaparehong Order ID para hindi mabura ang naunang tab
+      const rightExtractor = document.getElementById('extractorRightText');
+      const targetMode = document.getElementById('extractorTargetMode')?.value || 'both';
+
+      const updateTargetBox = (box) => {
+        if (!box) return;
         const newIdMatch = cleanPayload.match(/#([A-Z0-9]+)/i);
-        const oldIdMatch = leftExtractor.value.match(/#([A-Z0-9]+)/i);
-        if (newIdMatch && oldIdMatch && newIdMatch[1] === oldIdMatch[1] && !leftExtractor.value.includes(cleanPayload.slice(0, 120))) {
-          leftExtractor.value += '\n\n' + cleanPayload;
+        const oldIdMatch = box.value.match(/#([A-Z0-9]+)/i);
+        if (newIdMatch && oldIdMatch && newIdMatch[1] === oldIdMatch[1] && !box.value.includes(cleanPayload.slice(0, 120))) {
+          box.value += '\n\n' + cleanPayload;
         } else {
-          leftExtractor.value = cleanPayload;
+          box.value = cleanPayload;
         }
+      };
+
+      if (targetMode === 'both' || targetMode === 'outbound') {
+        updateTargetBox(leftExtractor);
         updateOutboundTemplate();
       }
+      if (targetMode === 'both' || targetMode === 'inbound') {
+        updateTargetBox(rightExtractor);
+        updateInboundTemplate();
+      }
+
       await navigator.clipboard.writeText('');
     }
   } catch (err) {
@@ -2609,6 +2641,11 @@ Order Information:
       autoSyncCurrentTimeDropdowns();
       requestBrowserPermissions();
       initDomsBookmarklet();
+
+      const savedTarget = localStorage.getItem('dfc_extractor_target');
+      if (savedTarget && document.getElementById('extractorTargetMode')) {
+        document.getElementById('extractorTargetMode').value = savedTarget;
+      }
     });
 </script>
 </body>
