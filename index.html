@@ -704,7 +704,7 @@
               <option value="move">MOVES</option>
             </select>
           </div>
-          <textarea id="extractorLeftText" placeholder="Paste raw DOMS notes here..." class="w-full h-20 p-2.5 bg-white border border-slate-300 rounded text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
+          <textarea id="extractorLeftText" oninput="updateOutboundTemplate()" placeholder="Paste raw DOMS notes here..." class="w-full h-20 p-2.5 bg-white border border-slate-300 rounded text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
           
           <!-- Call Attempt & Disposition Controls -->
           <div class="grid grid-cols-2 gap-2.5 pt-0.5">
@@ -786,7 +786,7 @@
               <option value="moves">MOVES</option>
             </select>
           </div>
-          <textarea id="extractorRightText" placeholder="Paste raw DOMS notes here..." class="w-full h-20 p-2.5 bg-white border border-slate-300 rounded text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
+          <textarea id="extractorRightText" oninput="updateInboundTemplate()" placeholder="Paste raw DOMS notes here..." class="w-full h-20 p-2.5 bg-white border border-slate-300 rounded text-xs font-mono text-slate-800 focus:outline-none focus:border-[#552586] resize-none shadow-inner"></textarea>
           
           <!-- Connection ID & Disposition Controls -->
           <div class="grid grid-cols-2 gap-2.5 pt-0.5">
