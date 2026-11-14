@@ -1418,25 +1418,37 @@
       return (index !== -1 && index + 1 < lines.length) ? lines[index + 1].trim() : '';
     }
 
+    let lastDomsCache = { orderId: '', requestedBy: '', serviceAddress: '', currentAddress: '' };
+
     function parseDomsNotes(rawText) {
       if (!rawText || !rawText.trim()) return null;
 
       const lines = rawText.split('\n').map(l => l.trim()).filter(l => l !== '');
 
+      // Kunin ang Order / Lead ID (e.g., TD3277462 o PY4EZ644H6JUJ31J) para malaman kung parehong order pa rin
+      const idMatch = rawText.match(/(?:Fulfillment ID|Lead|Reference ID)\s*#([A-Z0-9]+)/i) || rawText.match(/\/oms\/(?:order|lead)\/([A-Z0-9]+)/i);
+      const currentId = idMatch ? idMatch[1].toUpperCase() : '';
+
+      // Kung bagong Order/Lead ID na, i-reset ang cache
+      if (currentId && lastDomsCache.orderId !== currentId) {
+        lastDomsCache = { orderId: currentId, requestedBy: '', serviceAddress: '', currentAddress: '' };
+      }
+
       // 1. Requested by (First name + Last name)
       const firstName = getLineAfter(lines, 'First name');
       const lastName = getLineAfter(lines, 'Last name');
-      const requestedBy = `${firstName} ${lastName}`.trim();
+      const newName = `${firstName} ${lastName}`.trim();
+      if (newName) lastDomsCache.requestedBy = newName;
 
-      // 2. Service Address / New Service Address (Unit + space + address, walang dash)
-      const addrBase = getLineAfter(lines, 'address') || getLineAfter(lines, 'service address');
+      // 2. Service Address / New Service Address
+      const addrBase = getLineAfter(lines, 'service address') || getLineAfter(lines, 'address');
       const unitVal = getLineAfter(lines, 'unit');
-      const hasUnit = unitVal && !['unitnumber', 'lpdsid', 'fmsid', 'n/a'].includes(unitVal.toLowerCase());
-      const serviceAddress = hasUnit ? `${unitVal} ${addrBase}` : addrBase;
+      const hasUnit = unitVal && !['unitnumber', 'lpdsid', 'fmsid', 'n/a', 'service details'].includes(unitVal.toLowerCase());
+      const newServiceAddr = addrBase ? (hasUnit ? `${unitVal} ${addrBase}` : addrBase) : '';
+      if (newServiceAddr) lastDomsCache.serviceAddress = newServiceAddr;
 
       // 3. Current Service Address (Para sa Moves)
       const currHomeIdx = lines.findIndex(l => l.toLowerCase().includes('tell us about your current home'));
-      let currentAddress = '';
       if (currHomeIdx !== -1) {
         const currLines = lines.slice(currHomeIdx);
         const unit = getLineAfter(currLines, 'Unit #');
@@ -1447,10 +1459,14 @@
         const postal = getLineAfter(currLines, 'Postal code');
 
         const unitPrefix = (unit && unit.toLowerCase() !== 'street number') ? `${unit} ` : '';
-        currentAddress = `${unitPrefix}${stNum} ${stName}, ${city}, ${prov} ${postal}`.replace(/\s+/g, ' ').trim();
+        lastDomsCache.currentAddress = `${unitPrefix}${stNum} ${stName}, ${city}, ${prov} ${postal}`.replace(/\s+/g, ' ').trim();
       }
 
-      return { requestedBy, serviceAddress, currentAddress };
+      return {
+        requestedBy: lastDomsCache.requestedBy,
+        serviceAddress: lastDomsCache.serviceAddress,
+        currentAddress: lastDomsCache.currentAddress
+      };
     }
 
     function updateOutboundTemplate() {
@@ -1589,21 +1605,28 @@ Order Information:
 
     // 2. Kusa niyang babasahin ang clipboard pagbalik mo sa DFC Workspace tab
     async function autoReadDomsClipboard() {
-      try {
-        const clipText = await navigator.clipboard.readText();
-        if (clipText && clipText.startsWith('DFC_EXTRACT_PAYLOAD')) {
-          const cleanPayload = clipText.replace(/^DFC_EXTRACT_PAYLOAD\r?\n/, '');
-          const leftExtractor = document.getElementById('extractorLeftText');
-          if (leftExtractor && leftExtractor.value !== cleanPayload) {
-            leftExtractor.value = cleanPayload;
-            updateOutboundTemplate();
-          }
-          await navigator.clipboard.writeText('');
+  try {
+    const clipText = await navigator.clipboard.readText();
+    if (clipText && clipText.startsWith('DFC_EXTRACT_PAYLOAD')) {
+      const cleanPayload = clipText.replace(/^DFC_EXTRACT_PAYLOAD\r?\n/, '');
+      const leftExtractor = document.getElementById('extractorLeftText');
+      if (leftExtractor) {
+        // I-append kung magkaparehong Order ID para hindi mabura ang naunang tab
+        const newIdMatch = cleanPayload.match(/#([A-Z0-9]+)/i);
+        const oldIdMatch = leftExtractor.value.match(/#([A-Z0-9]+)/i);
+        if (newIdMatch && oldIdMatch && newIdMatch[1] === oldIdMatch[1] && !leftExtractor.value.includes(cleanPayload.slice(0, 120))) {
+          leftExtractor.value += '\n\n' + cleanPayload;
+        } else {
+          leftExtractor.value = cleanPayload;
         }
-      } catch (err) {
-        // Silent fail kung hindi pa naka-grant ang permission
+        updateOutboundTemplate();
       }
+      await navigator.clipboard.writeText('');
     }
+  } catch (err) {
+    // Silent fail kung hindi pa naka-grant ang permission
+  }
+}
 
     // I-trigger tuwing bumabalik ka sa DFC Workspace tab
     window.addEventListener('focus', autoReadDomsClipboard);
