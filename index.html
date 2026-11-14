@@ -521,6 +521,7 @@
         <!-- Popover Card -->
         <div 
           id="extractorSetupPopover" 
+          onclick="event.stopPropagation()"
           class="hidden fixed md:absolute left-4 right-4 md:left-auto md:right-0 top-16 md:top-10 max-w-sm md:w-80 bg-white border border-[#D8D8D8] rounded-xl shadow-2xl p-4 z-50 text-slate-800 space-y-3 text-xs mx-auto"
         >
           <div class="flex items-center justify-between bg-[#4B286D] text-white -mx-4 -mt-4 p-3 rounded-t-xl border-b border-[#3b2566]">
@@ -535,6 +536,7 @@
             <span class="text-[10.5px] font-bold text-slate-700">Auto-Fill Target:</span>
             <select 
               id="extractorTargetMode" 
+              onclick="event.stopPropagation()"
               onchange="localStorage.setItem('dfc_extractor_target', this.value)"
               class="text-[10.5px] font-bold bg-white border border-slate-300 rounded px-2 py-0.5 text-[#4B286D] cursor-pointer focus:outline-none focus:border-[#4B286D]"
             >
@@ -1995,9 +1997,10 @@ Order Information:
     });
 
     document.addEventListener('click', (e) => {
-      if (!activeAgentsDropdown?.contains(e.target) && e.target !== btnActiveAgents &&
-          !profileDropdown?.contains(e.target) && e.target !== profileBtn &&
-          !alarmPopover?.contains(e.target) && e.target !== openAlarmBtn) {
+      if (!activeAgentsDropdown?.contains(e.target) && !btnActiveAgents?.contains(e.target) &&
+          !profileDropdown?.contains(e.target) && !profileBtn?.contains(e.target) &&
+          !alarmPopover?.contains(e.target) && !openAlarmBtn?.contains(e.target) &&
+          !extractorSetupPopover?.contains(e.target) && !openExtractorSetupBtn?.contains(e.target)) {
         closeAllDropdowns();
       }
     });
