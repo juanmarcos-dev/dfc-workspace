@@ -756,8 +756,7 @@
   <main id="workspaceCanvas" class="flex-1 p-4 md:p-6 pl-12 md:pl-14 max-w-7xl mx-auto w-full flex flex-col justify-center">
     
     <!-- DUAL COLUMNS GRID (Dito nag-a-adjust ang layout order) -->
-    <div id="workspaceColumnsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5 flex-1">
-      
+    <div id="workspaceColumnsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-5 flex-1">      
       <!-- OUTBOUND COLUMN -->
       <div id="outboundColumnBox" class="flex flex-col workspace-card rounded-xl overflow-hidden">
         <div class="bg-gradient-to-r from-[#552586] to-[#68339E] text-white px-4 py-2.5 flex items-center justify-between shadow-xs">
@@ -914,7 +913,7 @@
         </div>
       </div>
 
-    </div>
+      </div>
 
   </main>
   <!-- ==================== CUSTOM CONFIRM MODAL ==================== -->
@@ -1584,17 +1583,16 @@ Order Information:
       try {
         const clipText = await navigator.clipboard.readText();
         if (clipText && clipText.startsWith('DFC_EXTRACT_PAYLOAD')) {
-          const cleanPayload = clipText.replace('DFC_EXTRACT_PAYLOAD\n', '');
+          const cleanPayload = clipText.replace(/^DFC_EXTRACT_PAYLOAD\r?\n/, '');
           const leftExtractor = document.getElementById('extractorLeftText');
           if (leftExtractor && leftExtractor.value !== cleanPayload) {
             leftExtractor.value = cleanPayload;
             updateOutboundTemplate();
           }
-          // Linisin ang clipboard para hindi paulit-ulit na mag-trigger
           await navigator.clipboard.writeText('');
         }
       } catch (err) {
-        // Silent fail kung hindi pa naka-grant ang clipboard permission
+        // Silent fail kung hindi pa naka-grant ang permission
       }
     }
 
