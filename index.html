@@ -139,6 +139,7 @@
     body.midnight-purple-mode #profileDropdown,
     body.midnight-purple-mode #activeAgentsDropdown,
     body.midnight-purple-mode #alarmPopover,
+    body.midnight-purple-mode #extractorSetupPopover,
     body.midnight-purple-mode #settingsBackdrop > div,
     body.midnight-purple-mode #profileInfoModal > div,
     body.midnight-purple-mode #linksBackdrop > div,
@@ -504,6 +505,74 @@
       </div>
 
       <span class="hidden lg:inline text-white/30">|</span>
+
+      <!-- 1-CLICK DOMS EXTRACTOR HEADER POPOVER -->
+      <div class="relative">
+        <button 
+          id="openExtractorSetupBtn" 
+          type="button" 
+          title="1-Click DOMS Extractor Setup"
+          class="flex items-center gap-1.5 bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-400/40 hover:border-emerald-300 px-2.5 py-1 rounded-lg transition-all text-white shadow-sm focus:outline-none cursor-pointer"
+        >
+          <span class="text-amber-300 text-xs leading-none">⚡</span>
+          <span class="text-[11px] font-bold text-emerald-200">Extractor</span>
+        </button>
+
+        <!-- Popover Card -->
+        <div 
+          id="extractorSetupPopover" 
+          class="hidden fixed md:absolute left-4 right-4 md:left-auto md:right-0 top-16 md:top-10 max-w-sm md:w-80 bg-white border border-[#D8D8D8] rounded-xl shadow-2xl p-4 z-50 text-slate-800 space-y-3 text-xs mx-auto"
+        >
+          <div class="flex items-center justify-between bg-[#4B286D] text-white -mx-4 -mt-4 p-3 rounded-t-xl border-b border-[#3b2566]">
+            <span class="font-bold text-xs tracking-wide flex items-center gap-1.5">
+              <span>⚡</span> <span>1-Click DOMS Extractor</span>
+            </span>
+            <button type="button" onclick="document.getElementById('extractorSetupPopover')?.classList.add('hidden')" class="text-white/80 hover:text-white text-sm font-bold cursor-pointer">✕</button>
+          </div>
+
+          <div class="flex items-center justify-between pt-1">
+            <span class="text-[10.5px] font-semibold text-slate-600">Drag button to Bookmarks Bar:</span>
+            <span class="text-[9.5px] bg-purple-100 text-[#4B286D] px-1.5 py-0.5 rounded font-bold">Ctrl+Shift+B</span>
+          </div>
+
+          <!-- Draggable Bookmarklet Button -->
+          <a 
+            id="dfcBookmarkletLink"
+            href="#"
+            onclick="event.preventDefault(); alert('Huwag i-click dito! I-drag mo itong purple button pataas papunta sa Bookmarks Bar ng browser mo.');"
+            class="w-full py-2 px-3 bg-[#4B286D] hover:bg-[#3B1F57] text-white rounded-md font-bold text-center block shadow-sm cursor-grab active:cursor-grabbing transition-transform hover:scale-[1.01]"
+          >
+            ⚡ Send to DFC
+          </a>
+
+          <!-- Compact 3-Step Visual Guide -->
+          <div class="grid grid-cols-3 gap-1.5 bg-slate-50 border border-slate-200 rounded-lg p-2 text-[9.5px] text-center">
+            <div class="bg-white p-1.5 rounded border border-slate-200 space-y-1">
+              <div class="bg-slate-100 rounded py-1 border border-dashed border-purple-400">
+                <span class="text-purple-700 font-bold block leading-none">↑</span>
+                <span class="bg-[#4B286D] text-white text-[7.5px] px-1 py-0.5 rounded inline-block mt-0.5">⚡ Send to DFC</span>
+              </div>
+              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">1. Drag</strong> to Bookmarks</p>
+            </div>
+
+            <div class="bg-white p-1.5 rounded border border-slate-200 space-y-1">
+              <div class="bg-slate-100 rounded py-1.5">
+                <span class="text-[8.5px] font-bold text-slate-700 bg-white px-1 py-0.5 rounded border border-slate-200">DOMS Tab</span>
+                <span class="text-[8px] text-emerald-600 font-bold block mt-0.5">Click ⚡</span>
+              </div>
+              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">2. Click</strong> while on DOMS</p>
+            </div>
+
+            <div class="bg-white p-1.5 rounded border border-slate-200 space-y-1">
+              <div class="bg-slate-100 rounded py-1.5">
+                <span class="text-[8.5px] font-bold text-purple-800 bg-purple-100 px-1 py-0.5 rounded">DFC Tab</span>
+                <span class="text-[8px] text-emerald-600 font-bold block mt-0.5">Allow ✓</span>
+              </div>
+              <p class="text-slate-700 leading-tight"><strong class="text-[#4B286D]">3. Switch</strong> &amp; Allow</p>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!-- HISTORY LOGS BUTTON -->
         <button 
@@ -1077,24 +1146,6 @@
       </div>
 
       <div class="grid grid-cols-2 gap-2">
-        <!-- 1-CLICK DOMS BOOKMARKLET SETUP -->
-      <div class="border-t border-doms-border pt-3 mt-2 space-y-2">
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-[11px] text-doms-purple uppercase">⚡ 1-Click DOMS Extractor</span>
-          <span class="text-[10px] text-doms-textMuted">Drag to Bookmarks Bar</span>
-        </div>
-        <a 
-          id="dfcBookmarkletLink"
-          href="#"
-          onclick="event.preventDefault(); alert('I-drag mo itong button papunta sa Bookmarks Bar ng browser mo!');"
-          class="w-full py-2 px-3 bg-[#4B286D] hover:bg-[#3B1F57] text-white rounded font-bold text-center block shadow-sm cursor-grab active:cursor-grabbing"
-        >
-          ⚡ Send to DFC
-        </a>
-        <p class="text-[10px] text-doms-textMuted leading-snug">
-          <strong>Paano gamitin:</strong> I-drag ang button sa taas papunta sa Bookmarks Bar. Kapag nasa DOMS page ka na (Lead o Order), i-click lang ito para auto-fill dito.
-        </p>
-      </div>
         <a href="https://www.telus.com/oms/order/search" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
           <span class="flex items-center gap-2">
             <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
@@ -1834,11 +1885,15 @@ Order Information:
     const openAlarmBtn = document.getElementById('openAlarmBtn');
     const alarmPopover = document.getElementById('alarmPopover');
 
+    const openExtractorSetupBtn = document.getElementById('openExtractorSetupBtn');
+    const extractorSetupPopover = document.getElementById('extractorSetupPopover');
+
     function closeAllDropdowns() {
-      activeAgentsDropdown?.classList.add('hidden');
-      profileDropdown?.classList.add('hidden');
-      alarmPopover?.classList.add('hidden');
-    }
+    activeAgentsDropdown?.classList.add('hidden');
+    profileDropdown?.classList.add('hidden');
+    alarmPopover?.classList.add('hidden');
+    extractorSetupPopover?.classList.add('hidden');
+  }
 
     btnActiveAgents?.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -1865,6 +1920,15 @@ Order Information:
       closeAllDropdowns();
       if (!isOpen) {
         alarmPopover?.classList.remove('hidden');
+      }
+    });
+
+    openExtractorSetupBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = !extractorSetupPopover?.classList.contains('hidden');
+      closeAllDropdowns();
+      if (!isOpen) {
+        extractorSetupPopover?.classList.remove('hidden');
       }
     });
 
