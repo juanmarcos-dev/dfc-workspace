@@ -342,6 +342,52 @@
     input:checked + .slider:before {
       transform: translateX(16px);
     }
+
+    /* === MODERN CUSTOM SCROLLBAR (TELUS PURPLE THEME) === */
+    /* Para sa Firefox */
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: #8b5cf6 #f3e8ff;
+    }
+
+    /* Para sa Chrome, Edge, at Safari */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f5f3ff;
+      border-radius: 9999px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #7c3aed 0%, #4B286D 100%);
+      border-radius: 9999px;
+      border: 1px solid #f5f3ff;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #6d28d9 0%, #3b1f57 100%);
+    }
+
+    /* Dark Mode / Midnight Purple Mode Scrollbar */
+    body.midnight-purple-mode * {
+      scrollbar-color: #9333ea #1e1233;
+    }
+
+    body.midnight-purple-mode ::-webkit-scrollbar-track {
+      background: #1e1233;
+    }
+
+    body.midnight-purple-mode ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #a855f7 0%, #6b21a8 100%);
+      border: 1px solid #1e1233;
+    }
+
+    body.midnight-purple-mode ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, #c084fc 0%, #7e22ce 100%);
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between">
