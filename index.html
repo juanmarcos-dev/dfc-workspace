@@ -1077,6 +1077,24 @@
       </div>
 
       <div class="grid grid-cols-2 gap-2">
+        <!-- 1-CLICK DOMS BOOKMARKLET SETUP -->
+      <div class="border-t border-doms-border pt-3 mt-2 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-[11px] text-doms-purple uppercase">⚡ 1-Click DOMS Extractor</span>
+          <span class="text-[10px] text-doms-textMuted">Drag to Bookmarks Bar</span>
+        </div>
+        <a 
+          id="dfcBookmarkletLink"
+          href="#"
+          onclick="event.preventDefault(); alert('I-drag mo itong button papunta sa Bookmarks Bar ng browser mo!');"
+          class="w-full py-2 px-3 bg-[#4B286D] hover:bg-[#3B1F57] text-white rounded font-bold text-center block shadow-sm cursor-grab active:cursor-grabbing"
+        >
+          ⚡ Send to DFC
+        </a>
+        <p class="text-[10px] text-doms-textMuted leading-snug">
+          <strong>Paano gamitin:</strong> I-drag ang button sa taas papunta sa Bookmarks Bar. Kapag nasa DOMS page ka na (Lead o Order), i-click lang ito para auto-fill dito.
+        </p>
+      </div>
         <a href="https://www.telus.com/oms/order/search" target="_blank" rel="noopener noreferrer" class="p-2 border border-doms-border rounded hover:border-doms-purple hover:bg-purple-50/50 flex items-center justify-between transition-colors font-semibold text-doms-textMain">
           <span class="flex items-center gap-2">
             <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 100 100" fill="none">
@@ -1333,21 +1351,71 @@
       }
     }, 15000);
 
+    // ================== DOMS EXTRACTOR & BOOKMARKLET LOGIC ==================
+    function getLineAfter(lines, label, exact = true) {
+      const index = lines.findIndex(line => 
+        exact ? line.toLowerCase() === label.toLowerCase() : line.toLowerCase().includes(label.toLowerCase())
+      );
+      return (index !== -1 && index + 1 < lines.length) ? lines[index + 1].trim() : '';
+    }
+
+    function parseDomsNotes(rawText) {
+      if (!rawText || !rawText.trim()) return null;
+
+      const lines = rawText.split('\n').map(l => l.trim()).filter(l => l !== '');
+
+      // 1. Requested by (First name + Last name)
+      const firstName = getLineAfter(lines, 'First name');
+      const lastName = getLineAfter(lines, 'Last name');
+      const requestedBy = `${firstName} ${lastName}`.trim();
+
+      // 2. Service Address / New Service Address (Unit + space + address, walang dash)
+      const addrBase = getLineAfter(lines, 'address') || getLineAfter(lines, 'service address');
+      const unitVal = getLineAfter(lines, 'unit');
+      const hasUnit = unitVal && !['unitnumber', 'lpdsid', 'fmsid', 'n/a'].includes(unitVal.toLowerCase());
+      const serviceAddress = hasUnit ? `${unitVal} ${addrBase}` : addrBase;
+
+      // 3. Current Service Address (Para sa Moves)
+      const currHomeIdx = lines.findIndex(l => l.toLowerCase().includes('tell us about your current home'));
+      let currentAddress = '';
+      if (currHomeIdx !== -1) {
+        const currLines = lines.slice(currHomeIdx);
+        const unit = getLineAfter(currLines, 'Unit #');
+        const stNum = getLineAfter(currLines, 'Street number');
+        const stName = getLineAfter(currLines, 'Street name');
+        const city = getLineAfter(currLines, 'City');
+        const prov = getLineAfter(currLines, 'Province');
+        const postal = getLineAfter(currLines, 'Postal code');
+
+        const unitPrefix = (unit && unit.toLowerCase() !== 'street number') ? `${unit} ` : '';
+        currentAddress = `${unitPrefix}${stNum} ${stName}, ${city}, ${prov} ${postal}`.replace(/\s+/g, ' ').trim();
+      }
+
+      return { requestedBy, serviceAddress, currentAddress };
+    }
+
     function updateOutboundTemplate() {
-      const type = document.getElementById('outboundTemplateSelect').value;
+      const rawText = document.getElementById('extractorLeftText')?.value || '';
+      const selectEl = document.getElementById('outboundTemplateSelect');
+
+      if (rawText.toLowerCase().includes('new-move') || rawText.toLowerCase().includes('/oms/lead/')) {
+        selectEl.value = 'move';
+      } else if (rawText.toLowerCase().includes('regular') || rawText.toLowerCase().includes('/oms/order/')) {
+        selectEl.value = 'regular';
+      }
+
+      const type = selectEl.value;
       const attempt = document.getElementById('outboundAttempt').value;
       const disposition = document.getElementById('outboundDisposition').value;
       const callAttemptDisp = (attempt || disposition) ? `${attempt} / ${disposition}` : '';
+      const extracted = parseDomsNotes(rawText);
       
-      // Kunin ang status ng Default Note switch
       const includeDefaultNote = document.getElementById('outboundNoteToggle')?.checked ?? true;
       const noteLabel = document.getElementById('outboundNoteLabel');
-      
       if (noteLabel) {
         noteLabel.textContent = includeDefaultNote ? "Default Note: On" : "Default Note: Off";
       }
 
-      // Kung naka-on, may kasamang pipe text; kung naka-off, pangalan lang
       const defaultNoteText = includeDefaultNote 
         ? "Digital Fulfillment Center | Transfer customers in WWE using FFH HS\n" 
         : "Digital Fulfillment Center\n";
@@ -1356,9 +1424,9 @@
       if (type === 'regular') {
         text = `${defaultNoteText}Call attempt/ Disposition: ${callAttemptDisp}
 Sales Order (CSR):  
-Requested by:
+Requested by: ${extracted ? extracted.requestedBy : ''}
 CID: 
-Service Address:
+Service Address: ${extracted ? extracted.serviceAddress : ''}
 
 Order Information: 
 Match Info/Verification: 
@@ -1368,10 +1436,10 @@ Outcome: `;
       } else {
         text = `${defaultNoteText}Call attempt/ Disposition: ${callAttemptDisp}
 Sales Order (CSR):  
-Requested by:
+Requested by: ${extracted ? extracted.requestedBy : ''}
 CID: 
-Current Service Address:
-New Service Address:
+Current Service Address: ${extracted ? extracted.currentAddress : ''}
+New Service Address: ${extracted ? extracted.serviceAddress : ''}
 
 Order Information: 
 Match Info/Verification: 
@@ -1383,14 +1451,22 @@ Outcome: `;
     }
 
     function updateInboundTemplate() {
-      const type = document.getElementById('inboundTemplateSelect').value;
+      const rawText = document.getElementById('extractorRightText')?.value || '';
+      const selectEl = document.getElementById('inboundTemplateSelect');
+
+      if (rawText.toLowerCase().includes('new-move') || rawText.toLowerCase().includes('/oms/lead/')) {
+        selectEl.value = 'moves';
+      } else if (rawText.toLowerCase().includes('regular') || rawText.toLowerCase().includes('/oms/order/')) {
+        selectEl.value = 'regular';
+      }
+
+      const type = selectEl.value;
       const connId = document.getElementById('inboundConnectionId').value;
       const disposition = document.getElementById('inboundDisposition').value;
+      const extracted = parseDomsNotes(rawText);
 
-      // Kunin ang status ng Default Note switch para sa Inbound
       const includeDefaultNote = document.getElementById('inboundNoteToggle')?.checked ?? true;
       const noteLabel = document.getElementById('inboundNoteLabel');
-      
       if (noteLabel) {
         noteLabel.textContent = includeDefaultNote ? "Default Note: On" : "Default Note: Off";
       }
@@ -1405,9 +1481,9 @@ Outcome: `;
 Connection ID: ${connId}
 Disposition: ${disposition}
 Sales Order:  
-Requested by:
+Requested by: ${extracted ? extracted.requestedBy : ''}
 CID: 
-Service Address:
+Service Address: ${extracted ? extracted.serviceAddress : ''}
 
 Order Information: 
 > cx called in | vrfy thru:
@@ -1418,10 +1494,10 @@ Order Information:
 Connection ID: ${connId}
 Disposition: ${disposition}
 Sales Order:  
-Requested by:
+Requested by: ${extracted ? extracted.requestedBy : ''}
 CID: 
-Current Service Address:
-New Service Address: 
+Current Service Address: ${extracted ? extracted.currentAddress : ''}
+New Service Address: ${extracted ? extracted.serviceAddress : ''} 
 
 Order Information: 
 > cx called in | vrfy thru:
@@ -1430,6 +1506,43 @@ Order Information:
       }
       document.getElementById('docInboundText').value = text;
     }
+
+    // I-setup ang Bookmarklet URL dynamically base sa Vercel domain mo
+    function initDomsBookmarklet() {
+      const linkEl = document.getElementById('dfcBookmarkletLink');
+      if (!linkEl) return;
+
+      const workspaceUrl = window.location.origin + window.location.pathname;
+      const bookmarkletCode = `(function(){
+        var raw = document.body.innerText || '';
+        var url = window.location.href;
+        var payload = url + '\\n' + raw;
+        var target = '${workspaceUrl}?doms_data=' + encodeURIComponent(payload);
+        window.open(target, 'DFC_WORKSPACE_TAB');
+      })();`;
+
+      linkEl.setAttribute('href', 'javascript:' + encodeURIComponent(bookmarkletCode));
+    }
+
+    // Basahin kung may ipinasang data galing sa Bookmarklet pag-load o pag-focus ng tab
+    function checkIncomingBookmarkletData() {
+      const params = new URLSearchParams(window.location.search);
+      const incomingData = params.get('doms_data');
+      if (incomingData) {
+        const leftExtractor = document.getElementById('extractorLeftText');
+        if (leftExtractor) {
+          leftExtractor.value = incomingData;
+          updateOutboundTemplate();
+        }
+        // Linisin ang URL parameter pagkatapos ma-extract para malinis ang address bar
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initDomsBookmarklet();
+      checkIncomingBookmarkletData();
+    });
 
     function toggleSwitchMode(textareaId, labelId, isEditable) {
       const textarea = document.getElementById(textareaId);
